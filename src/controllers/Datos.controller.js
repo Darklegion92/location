@@ -23,7 +23,7 @@ async function redes(req, res) {
   var con = conexionMYSQL.con;
 
   const sql =
-    "SELECT * FROM redesSociales";
+    "SELECT * FROM redessociales";
   await con.query(sql, async function(err, result) {
     if (err) throw err;
     res.status(200).send(result);
