@@ -3,11 +3,8 @@ const ArticuloCtrl = require('../controllers/Articulo.controller')
 
 const router = Router();
 router
-    .get('/lista/:nombre',ArticuloCtrl.listaNombre)
-    .get('/lista/',ArticuloCtrl.lista)
-    .get('/familia/:nombre',ArticuloCtrl.familia)
-    .get('/grupo/:nombre',ArticuloCtrl.grupo)
-    .get('/subgrupo/:nombre',ArticuloCtrl.subgrupo)
+    .get('/filtro',ArticuloCtrl.listaFiltrada)
+    .get('/lista',ArticuloCtrl.lista)
     .get('/agrupaciones/:nombre',ArticuloCtrl.agrupaciones)
     .get('/*',ArticuloCtrl.error)
     
