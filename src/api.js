@@ -8,6 +8,9 @@ const agrupacionesRouter = require("./routes/Agrupaciones.routes")
 const slidersRouter = require("./routes/Slider.routes")
 const seccionesRouter = require("./routes/Seccion.routes")
 const datosRouter = require("./routes/Datos.routes")
+const carritoRouter = require("./routes/Carrito.routes")
+const usauriosRouter = require("./routes/Usuarios.routes")
+const barriosRouter = require("./routes/Barrios.routes")
 const CONFIG = require("./config/config");
 
 const APP = express();
@@ -31,6 +34,9 @@ APP.use('/agrupaciones',agrupacionesRouter)
 APP.use('/slider',slidersRouter)
 APP.use('/secciones',seccionesRouter)
 APP.use('/datos',datosRouter)
+APP.use('/carrito',carritoRouter)
+APP.use('/usuario',usauriosRouter)
+APP.use('/barrios',barriosRouter)
 
 //Elementos Estaticos
 APP.use(express.static("public"));
