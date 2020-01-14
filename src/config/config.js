@@ -5,6 +5,6 @@ module.exports = {
     DB_MYSQL: process.env.DB_MYSQL || "localhost",
     PORT_DB_FIREBIRD: process.env.PORT_DB_FIREBIRD || 3050,
     USER_MYSQL: process.env.USER_MYSQL || 'domicilios',
-    PASS_MYSQL: process.env.PASS_MYSQL || '1234',
-    NAME_MYSQL: process.env.NAME_MYSQL || 'Domicilios83731',
+    PASS_MYSQL: process.env.PASS_MYSQL || 'Domicilios83731',
+    NAME_MYSQL: process.env.NAME_MYSQL || 'domiciliossfc',
 }
