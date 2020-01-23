@@ -1,10 +1,10 @@
 module.exports = {
-    PORT: process.env.PORT || 65150,
+    PORT: process.env.PORT || 3001,
     DB_FIREBIRD: process.env.FIREBIRD_URI || 'D:\\SYSplus\\Datos\\PRU\\sysplus.fdb',
     SECRET_TOKEN: "SOLTEC-tecnologiaydesarrollo$",
-    DB_MYSQL: process.env.DB_MYSQL || "localhost",
+    DB_MONGO: process.env.DB_MOMGO || "mongodb://localhost:27017",
     PORT_DB_FIREBIRD: process.env.PORT_DB_FIREBIRD || 3050,
-    USER_MYSQL: process.env.USER_MYSQL || 'domicilios',
-    PASS_MYSQL: process.env.PASS_MYSQL || 'Domicilios83731',
-    NAME_MYSQL: process.env.NAME_MYSQL || 'domiciliossfc',
+    USER_MONGO: process.env.USER_MYSQL || 'root',
+    PASS_MONGO: process.env.PASS_MYSQL || '1234',
+    NAME_MONGO: process.env.NAME_MYSQL || 'geolocalizacion',
 }

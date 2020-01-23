@@ -1,8 +1,8 @@
-const conexionMYSQL = require("../services/conexionMYSQL");
+const Usuario = require("../models/Usuarios.model");
 
 async function id(req, res) {
   res.setHeader("Content-Type", "application/json");
-  var con = conexionMYSQL.con;
+  /*var con = conexionMYSQL.con;
   const sql = "SELECT idCliente FROM clientes WHERE idFacebook = ?";
   const parametros = [req.params.id];
   await con.query(sql, parametros, function(err, result) {
@@ -12,52 +12,53 @@ async function id(req, res) {
   });
   try {
     con.release();
-  } catch (e) {}
+  } catch (e) {}*/
 }
 async function grabarUsuario(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const { cliente } = req.body;
-  var con = conexionMYSQL.con;
-  const sql =
-    "INSERT INTO clientes(`documentoCliente`, `idTipoDocumento`, `nombresCliente`, `apellidosCliente`, `direccionCliente`, `idBarrio`,  `celularCliente`, `correoCliente`, `idGenero`, `fechaCliente`, `idUsuario`, `idFacebook`) " +
-    "values(?,?,?,?,?,?,?,?,?,CURDATE(),?,?)";
-  const parametros = [
-    cliente.documentoCliente,
-    1,
-    cliente.nombresCliente,
-    "Movil",
-    cliente.direccionCliente,
-    cliente.idBarrio,
-    cliente.celularCliente,
-    cliente.correoCliente,
-    1,
-    1,
-    cliente.idFacebook
-  ];
-  await con.query(sql, parametros, function(err, result) {
-    if (err) throw err;
-    console.log(result);
+  const { nombre, usuario, password } = req.body;
 
-    res.status(200).send(result);
+  const nuevoUsuario = new Usuario({
+    nombre,
+    usuario,
+    password
   });
   try {
-    con.release();
-  } catch (e) {}
+    await nuevoUsuario.save();
+    res.status(201).send({ res: "Guardado Correctamente" });
+  } catch (err) {
+    res.status(400).send({ err });
+  }
 }
 async function login(req, res) {
   res.setHeader("Content-Type", "application/json");
-
-  var con = conexionMYSQL.con;
-  const sql = "SELECT * FROM clientes WHERE correoCliente = ?";
-  const parametros = [req.query.correo];
-  await con.query(sql, parametros, function(err, result) {
-    if (err) throw err;
-    if (result) res.status(200).send(result);
-    res.status(201);
-  });
+  var user;
   try {
-    con.release();
-  } catch (e) {}
+    const { usuario, password } = req.body;
+    user = await Usuario.find({ usuario, password });
+    if (user[0]) {
+      res.status(200).send(user[0]);
+    } else {
+      res.status(201).send({ res: "Usuario o Clave No Validos", status: 201 });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ err });
+  }
+}
+
+async function consultar(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  var users;
+  try {
+    users = await Usuario.find();
+    if (users[0]) {
+      res.status(200).send(users);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ err });
+  }
 }
 
 function error(req, res) {
@@ -68,5 +69,6 @@ module.exports = {
   id,
   grabarUsuario,
   login,
+  consultar,
   error
 };

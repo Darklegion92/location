@@ -3,14 +3,9 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
 const session = require("express-session");
-const articulosRouter = require("./routes/Articulo.routes")
-const agrupacionesRouter = require("./routes/Agrupaciones.routes")
-const slidersRouter = require("./routes/Slider.routes")
-const seccionesRouter = require("./routes/Seccion.routes")
-const datosRouter = require("./routes/Datos.routes")
-const carritoRouter = require("./routes/Carrito.routes")
-const usauriosRouter = require("./routes/Usuarios.routes")
-const barriosRouter = require("./routes/Barrios.routes")
+const usauriosRouter = require("./routes/Usuarios.routes");
+const locationRouter = require("./routes/Location.routes");
+
 const CONFIG = require("./config/config");
 
 const APP = express();
@@ -29,14 +24,8 @@ APP.use(
 APP.use(morgan("dev"));
 
 //Ruta
-APP.use('/articulos',articulosRouter)
-APP.use('/agrupaciones',agrupacionesRouter)
-APP.use('/slider',slidersRouter)
-APP.use('/secciones',seccionesRouter)
-APP.use('/datos',datosRouter)
-APP.use('/carrito',carritoRouter)
-APP.use('/usuario',usauriosRouter)
-APP.use('/barrios',barriosRouter)
+APP.use("/usuario", usauriosRouter);
+APP.use("/location", locationRouter);
 
 //Elementos Estaticos
 APP.use(express.static("public"));
