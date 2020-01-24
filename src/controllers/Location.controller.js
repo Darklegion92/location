@@ -35,7 +35,7 @@ async function obtenerLocation(req, res) {
   var locations;
   try {
     const { idUsuario } = req.body;
-    locations = await Location.find({ idUsuario }.sort({ fecha: 1 }));
+    locations = await Location.find({ idUsuario }).sort({fecha: 'desc'});
     console.log(idUsuario);
 
     if (locations[0].latitude) {
