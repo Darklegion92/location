@@ -5,6 +5,8 @@ const cors = require("cors");
 const session = require("express-session");
 const usauriosRouter = require("./routes/Usuarios.routes");
 const locationRouter = require("./routes/Location.routes");
+const rutasRouter = require("./routes/Rutas.routes");
+const clientesRouter = require("./routes/Clientes.routes");
 
 const CONFIG = require("./config/config");
 
@@ -26,6 +28,8 @@ APP.use(morgan("dev"));
 //Ruta
 APP.use("/usuario", usauriosRouter);
 APP.use("/location", locationRouter);
+APP.use("/rutas", rutasRouter);
+APP.use("/clientes", clientesRouter);
 
 //Elementos Estaticos
 APP.use(express.static("public"));

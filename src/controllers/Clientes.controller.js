@@ -1,22 +1,40 @@
-const Usuario = require("../models/Usuarios.model");
+const conexionFirebird = require("../services/conectionFirebird");
+const CONFIG = require("../config/config");
 
-async function id(req, res) {
+async function idCliente(req, res) {
   res.setHeader("Content-Type", "application/json");
-  /*var con = conexionMYSQL.con;
-  const sql = "SELECT idCliente FROM clientes WHERE idFacebook = ?";
-  const parametros = [req.params.id];
-  await con.query(sql, parametros, function(err, result) {
-    if (err) throw err;
-    if (result) res.status(200).send(result);
-    res.status(201);
-  });
-  try {
-    con.release();
-  } catch (e) {}*/
+  const idCliente = req.params.idCliente;
+
+  await conexionFirebird(
+    CONFIG.USER_FIREBIRD,
+    CONFIG.PASS_FIREBIRD,
+    async (err, db) => {
+      db.query(
+        "select terid AS idTNS, nit as documento,  t.nombre, direcc1 as direccion, z.nombre as barrio, telef1 as telefono  from terceros t, zonas z where z.ZONAID = t.zona1 and nit = ?",
+        [idCliente],
+        (err, datos) => {
+          if (err) console.log(err);
+
+          let clientes = {};
+          datos.map(dato => {
+            clientes = {
+              documento: dato.DOCUMENTO.toString(),
+              idTNS: dato.IDTNS.toString(),
+              nombre: dato.NOMBRE.toString(),
+              direccion: dato.DIRECCION.toString(),
+              barrio: dato.BARRIO.toString(),
+              telefono: dato.TELEFONO.toString()
+            };
+          });
+          res.status(200).send({ res: clientes });
+        }
+      );
+    }
+  );
 }
 async function grabarUsuario(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const { nombre, usuario, password } = req.body;
+  /*const { nombre, usuario, password } = req.body;
 
   const nuevoUsuario = new Usuario({
     nombre,
@@ -28,11 +46,11 @@ async function grabarUsuario(req, res) {
     res.status(200).send({ res: "Guardado Correctamente" });
   } catch (err) {
     res.status(400).send({ err });
-  }
+  }*/
 }
 async function login(req, res) {
   res.setHeader("Content-Type", "application/json");
-  var user;
+  /* var user;
   try {
     const { usuario, password } = req.body;
     user = await Usuario.find({ usuario, password });
@@ -44,12 +62,12 @@ async function login(req, res) {
   } catch (err) {
     console.log(err);
     res.status(500).send({ err });
-  }
+  }*/
 }
 
 async function consultar(req, res) {
   res.setHeader("Content-Type", "application/json");
-  var users;
+  /*var users;
   try {
     users = await Usuario.find();
     if (users[0]) {
@@ -58,13 +76,13 @@ async function consultar(req, res) {
   } catch (err) {
     console.log(err);
     res.status(500).send({ err });
-  }
+  }*/
 }
 
 async function actualizarUsuario(req, res) {
   res.setHeader("Content-Type", "application/json");
 
-  const { id, password } = req.body;
+  /*const { id, password } = req.body;
 
   try {
     const resp = await Usuario.updateOne({ id }, { password });
@@ -73,7 +91,7 @@ async function actualizarUsuario(req, res) {
     res.status(200).send({ res: "Guardado Correctamente" });
   } catch (err) {
     res.status(400).send({ err });
-  }
+  }*/
 }
 
 function error(req, res) {
@@ -81,7 +99,7 @@ function error(req, res) {
 }
 
 module.exports = {
-  id,
+  idCliente,
   grabarUsuario,
   actualizarUsuario,
   login,

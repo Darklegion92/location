@@ -1,22 +1,23 @@
-const Usuario = require("../models/Usuarios.model");
+const Ruta = require("../models/Rutas.model");
 
-async function id(req, res) {
+async function idUsuario(req, res) {
   res.setHeader("Content-Type", "application/json");
-  /*var con = conexionMYSQL.con;
-  const sql = "SELECT idCliente FROM clientes WHERE idFacebook = ?";
-  const parametros = [req.params.id];
-  await con.query(sql, parametros, function(err, result) {
-    if (err) throw err;
-    if (result) res.status(200).send(result);
-    res.status(201);
-  });
+  const idUsuario = req.params.idUsuario;
+  console.log(req.params);
+  var users;
   try {
-    con.release();
-  } catch (e) {}*/
+    users = await Ruta.find({ idUsuario });
+    if (users[0]) {
+      res.status(200).send(users);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ err });
+  }
 }
 async function grabarUsuario(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const { nombre, usuario, password } = req.body;
+  /*const { nombre, usuario, password } = req.body;
 
   const nuevoUsuario = new Usuario({
     nombre,
@@ -28,11 +29,11 @@ async function grabarUsuario(req, res) {
     res.status(200).send({ res: "Guardado Correctamente" });
   } catch (err) {
     res.status(400).send({ err });
-  }
+  }*/
 }
 async function login(req, res) {
   res.setHeader("Content-Type", "application/json");
-  var user;
+  /* var user;
   try {
     const { usuario, password } = req.body;
     user = await Usuario.find({ usuario, password });
@@ -44,12 +45,12 @@ async function login(req, res) {
   } catch (err) {
     console.log(err);
     res.status(500).send({ err });
-  }
+  }*/
 }
 
 async function consultar(req, res) {
   res.setHeader("Content-Type", "application/json");
-  var users;
+  /*var users;
   try {
     users = await Usuario.find();
     if (users[0]) {
@@ -58,13 +59,13 @@ async function consultar(req, res) {
   } catch (err) {
     console.log(err);
     res.status(500).send({ err });
-  }
+  }*/
 }
 
 async function actualizarUsuario(req, res) {
   res.setHeader("Content-Type", "application/json");
 
-  const { id, password } = req.body;
+  /*const { id, password } = req.body;
 
   try {
     const resp = await Usuario.updateOne({ id }, { password });
@@ -73,7 +74,7 @@ async function actualizarUsuario(req, res) {
     res.status(200).send({ res: "Guardado Correctamente" });
   } catch (err) {
     res.status(400).send({ err });
-  }
+  }*/
 }
 
 function error(req, res) {
@@ -81,7 +82,7 @@ function error(req, res) {
 }
 
 module.exports = {
-  id,
+  idUsuario,
   grabarUsuario,
   actualizarUsuario,
   login,
