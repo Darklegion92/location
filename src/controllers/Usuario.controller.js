@@ -64,11 +64,12 @@ async function consultar(req, res) {
 async function actualizarUsuario(req, res) {
   res.setHeader("Content-Type", "application/json");
   const { _id, password } = req.body;
+  console.log(req.body);
 
   try {
     const resp = await Usuario.updateOne({ _id }, { password });
     console.log(resp);
-    
+
     res.status(200).send({ res: "Guardado Correctamente" });
   } catch (err) {
     res.status(400).send({ err });
