@@ -15,21 +15,33 @@ async function idUsuario(req, res) {
     res.status(500).send({ err });
   }
 }
-async function grabarUsuario(req, res) {
+async function guardarRuta(req, res) {
   res.setHeader("Content-Type", "application/json");
-  /*const { nombre, usuario, password } = req.body;
-
-  const nuevoUsuario = new Usuario({
+  const {
+    documento,
+    telefono,
     nombre,
-    usuario,
-    password
+    idUsuario,
+    idTNS,
+    direccion,
+    barrio
+  } = req.body;
+
+  const nuevaRuta = new Ruta({
+    documento,
+    telefono,
+    nombre,
+    idUsuario,
+    idTNS,
+    direccion,
+    barrio
   });
   try {
-    await nuevoUsuario.save();
+    await nuevaRuta.save();
     res.status(200).send({ res: "Guardado Correctamente" });
   } catch (err) {
     res.status(400).send({ err });
-  }*/
+  }
 }
 async function login(req, res) {
   res.setHeader("Content-Type", "application/json");
@@ -83,7 +95,7 @@ function error(req, res) {
 
 module.exports = {
   idUsuario,
-  grabarUsuario,
+  guardarRuta,
   actualizarUsuario,
   login,
   consultar,
