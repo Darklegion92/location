@@ -63,10 +63,10 @@ async function consultar(req, res) {
 
 async function actualizarUsuario(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const { idUsuario, password } = req.body;
+  const { _id, password } = req.body;
 
   try {
-    await Usuario.update({ idUsuario }, { password });
+    await Usuario.update({ _id }, { password });
     res.status(201).send({ res: "Guardado Correctamente" });
   } catch (err) {
     res.status(400).send({ err });
