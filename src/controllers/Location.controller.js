@@ -32,12 +32,14 @@ async function grabarLocation(req, res) {
 }
 async function obtenerLocation(req, res) {
   res.setHeader("Content-Type", "application/json");
-  var location;
+  var locations;
   try {
     const { idUsuario } = req.body;
-    location = await Location.find({ idUsuario });
-    if (location[0].latitude) {
-      res.status(200).send({ res: location[0], status: 200 });
+    locations = await Location.find({ idUsuario });
+    console.log(idUsuario);
+
+    if (locations[0].latitude) {
+      res.status(200).send({ res: locations, status: 200 });
     } else {
       res
         .status(201)

@@ -3,7 +3,7 @@ const LocationCtrl = require("../controllers/Location.controller");
 
 const router = Router();
 router
-  .post("/consultar/", LocationCtrl.id)
+  .post("/consultar/", LocationCtrl.obtenerLocation)
   .post("/guardar/", LocationCtrl.grabarLocation)
   .get("/*", LocationCtrl.error);
 
