@@ -25,7 +25,7 @@ async function grabarUsuario(req, res) {
   });
   try {
     await nuevoUsuario.save();
-    res.status(201).send({ res: "Guardado Correctamente" });
+    res.status(200).send({ res: "Guardado Correctamente" });
   } catch (err) {
     res.status(400).send({ err });
   }
@@ -66,8 +66,8 @@ async function actualizarUsuario(req, res) {
   const { _id, password } = req.body;
 
   try {
-    await Usuario.update({ _id }, { password });
-    res.status(201).send({ res: "Guardado Correctamente" });
+    await Usuario.updateOne({ _id }, { password });
+    res.status(200).send({ res: "Guardado Correctamente" });
   } catch (err) {
     res.status(400).send({ err });
   }
