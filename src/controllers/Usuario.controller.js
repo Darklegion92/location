@@ -61,6 +61,18 @@ async function consultar(req, res) {
   }
 }
 
+async function actualizarUsuario(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  const { idUsuario, password } = req.body;
+
+  try {
+    await Usuario.update({ idUsuario }, { password });
+    res.status(201).send({ res: "Guardado Correctamente" });
+  } catch (err) {
+    res.status(400).send({ err });
+  }
+}
+
 function error(req, res) {
   res.status(404).send({ error: "Página no encontrada" });
 }
@@ -68,6 +80,7 @@ function error(req, res) {
 module.exports = {
   id,
   grabarUsuario,
+  actualizarUsuario,
   login,
   consultar,
   error
