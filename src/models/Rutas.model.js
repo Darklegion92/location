@@ -6,6 +6,23 @@ const RutasSchema = new Schema({
     required: true,
     lowercase: true
   },
+  cartera: {
+    type: Array
+  },
+  longitude: {
+    type: Number
+  },
+  latitude: {
+    type: Number
+  },
+  novedad: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+  idNovedad: {
+    type: Number,
+  },
   telefono: {
     type: String,
     required: true,
@@ -37,6 +54,10 @@ const RutasSchema = new Schema({
   },
   ultVisita: {
     type: Date
+  },
+  visitado: {
+    type: Boolean,
+    default: false
   },
   creado: {
     type: Date,
