@@ -6,7 +6,10 @@ async function idUsuario(req, res) {
   const idUsuario = req.params.idUsuario;
   try {
     var rutero = [];
-    var clientes = await Ruta.find({ idUsuario });
+    var clientes = await Ruta.find({ idUsuario,visitado:false });
+    if(clientes.length<=0){
+       res.status(201).send({res:"no hay ruta asignada"});
+    }
     clientes.map(async (cliente, i) => {
       const facturas = await conexionFirebird.queryDB(
         "select docuid as id, detalle, saldo, valor from documento where terid= ? and saldo>0 and codcomp='FV'",
@@ -59,6 +62,47 @@ async function idUsuario(req, res) {
   }
 }
 
+async function agregarRutaTotal(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  const {
+  id ,
+  barrio,
+  direccion,
+  documento,
+  idTNS,
+  latitude,
+  longitude,
+  nombre,
+  novedad,
+  telefono,
+  ultVisita,
+  visitado,
+  idUsuario
+  } = req.body;
+  console.log(req.body);
+  
+  const nuevaRuta = new Ruta({
+  idUsuario,
+  barrio,
+  direccion,
+  documento,
+  idTNS,
+  latitude,
+  longitude,
+  nombre,
+  novedad,
+  telefono,
+  ultVisita,
+  visitado
+  });
+  try {
+    await nuevaRuta.save();
+    res.status(200).send({ res: "Guardado Correctamente" });
+  } catch (err) {
+    res.status(400).send({ err });
+  }
+}
+
 async function guardarRuta(req, res) {
   res.setHeader("Content-Type", "application/json");
   const {
@@ -70,7 +114,8 @@ async function guardarRuta(req, res) {
     direccion,
     barrio
   } = req.body;
-
+  console.log(req.body);
+  
   const nuevaRuta = new Ruta({
     documento,
     telefono,
@@ -84,7 +129,7 @@ async function guardarRuta(req, res) {
     await nuevaRuta.save();
     res.status(200).send({ res: "Guardado Correctamente" });
   } catch (err) {
-    res.status(400).send({ err });
+    res.status(400).send({ err:err });
   }
 }
 async function login(req, res) {
@@ -143,5 +188,6 @@ module.exports = {
   actualizarUsuario,
   login,
   consultar,
-  error
+  error,
+  agregarRutaTotal
 };
