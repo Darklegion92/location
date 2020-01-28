@@ -3,6 +3,7 @@ const RutasCtrl = require("../controllers/Rutas.controller");
 
 const router = Router();
 router
+  .get("/usuario", RutasCtrl.ruteroUsuario)
   .get("/consultar/:idUsuario", RutasCtrl.idUsuario)
   .post("/guardar/", RutasCtrl.guardarRuta)
   .post("/guardartotal/", RutasCtrl.agregarRutaTotal);

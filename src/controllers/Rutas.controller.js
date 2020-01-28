@@ -62,10 +62,28 @@ async function idUsuario(req, res) {
   }
 }
 
+async function ruteroUsuario(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  console.log(req.query);
+  const {idUsuario, fecha} = req.query
+  const fec =Date.parse(fecha)
+  
+  try {
+    var clientes = await Ruta.find({ idUsuario,visitado:true,creado:{"$lte": fec}});
+    if(clientes.length<=0){
+       res.status(201).send({res:"no hay ruta recorrida"});
+    }else{
+      res.status(200).send(clientes);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ err });
+  }
+}
+
 async function agregarRutaTotal(req, res) {
   res.setHeader("Content-Type", "application/json");
   const {
-  id ,
   barrio,
   direccion,
   documento,
@@ -79,8 +97,7 @@ async function agregarRutaTotal(req, res) {
   visitado,
   idUsuario
   } = req.body;
-  console.log(req.body);
-  
+    
   const nuevaRuta = new Ruta({
   idUsuario,
   barrio,
@@ -105,6 +122,7 @@ async function agregarRutaTotal(req, res) {
 
 async function guardarRuta(req, res) {
   res.setHeader("Content-Type", "application/json");
+    
   const {
     documento,
     telefono,
@@ -114,8 +132,6 @@ async function guardarRuta(req, res) {
     direccion,
     barrio
   } = req.body;
-  console.log(req.body);
-  
   const nuevaRuta = new Ruta({
     documento,
     telefono,
@@ -132,50 +148,9 @@ async function guardarRuta(req, res) {
     res.status(400).send({ err:err });
   }
 }
-async function login(req, res) {
-  res.setHeader("Content-Type", "application/json");
-  /* var user;
-  try {
-    const { usuario, password } = req.body;
-    user = await Usuario.find({ usuario, password });
-    if (user[0]) {
-      res.status(200).send(user[0]);
-    } else {
-      res.status(201).send({ res: "Usuario o Clave No Validos", status: 201 });
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ err });
-  }*/
-}
 
 async function consultar(req, res) {
   res.setHeader("Content-Type", "application/json");
-  /*var users;
-  try {
-    users = await Usuario.find();
-    if (users[0]) {
-      res.status(200).send(users);
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ err });
-  }*/
-}
-
-async function actualizarUsuario(req, res) {
-  res.setHeader("Content-Type", "application/json");
-
-  /*const { id, password } = req.body;
-
-  try {
-    const resp = await Usuario.updateOne({ id }, { password });
-    console.log(resp);
-
-    res.status(200).send({ res: "Guardado Correctamente" });
-  } catch (err) {
-    res.status(400).send({ err });
-  }*/
 }
 
 function error(req, res) {
@@ -184,9 +159,8 @@ function error(req, res) {
 
 module.exports = {
   idUsuario,
+  ruteroUsuario,
   guardarRuta,
-  actualizarUsuario,
-  login,
   consultar,
   error,
   agregarRutaTotal

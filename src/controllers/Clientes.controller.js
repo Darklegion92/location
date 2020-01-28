@@ -1,36 +1,35 @@
 const conexionFirebird = require("../services/conectionFirebird");
-const CONFIG = require("../config/config");
 
-async function idCliente(req, res) {
+async function documento(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const idCliente = req.params.idCliente;
+  const documento = req.params.documento;
+  try {
+    const datos = await conexionFirebird.queryDB(
+      "select terid AS idTNS, nit as documento,  t.nombre, direcc1 as direccion, z.nombre as barrio, telef1 as telefono  from terceros t, zonas z where z.ZONAID = t.zona1 and nit = ?",
+      [documento]
+    );
 
-  await conexionFirebird(
-    CONFIG.USER_FIREBIRD,
-    CONFIG.PASS_FIREBIRD,
-    async (err, db) => {
-      db.query(
-        "select terid AS idTNS, nit as documento,  t.nombre, direcc1 as direccion, z.nombre as barrio, telef1 as telefono  from terceros t, zonas z where z.ZONAID = t.zona1 and nit = ?",
-        [idCliente],
-        (err, datos) => {
-          if (err) console.log(err);
-
-          let clientes = {};
-          datos.map(dato => {
-            clientes = {
-              documento: dato.DOCUMENTO.toString(),
-              idTNS: dato.IDTNS.toString(),
-              nombre: dato.NOMBRE.toString(),
-              direccion: dato.DIRECCION.toString(),
-              barrio: dato.BARRIO.toString(),
-              telefono: dato.TELEFONO.toString()
-            };
-          });
-          res.status(200).send({ res: clientes });
-        }
-      );
+    if (datos) {
+      var cliente = {};
+      datos.map(data => {
+        cliente = {
+          idTNS: data.IDTNS,
+          documento: data.DOCUMENTO.toString(),
+          nombre: data.NOMBRE.toString(),
+          direccion: data.DIRECCION.toString(),
+          barrio: data.BARRIO.toString(),
+          telefono: data.TELEFONO.toString()
+        };
+      });
+      res.status(200).send(cliente);
+    } else {
+      res.status(201).send({ res: "Cliente no Existe" });
     }
-  );
+  } catch (error) {
+    console.log(error);
+
+    res.status(200).send({ res: error });
+  }
 }
 async function grabarUsuario(req, res) {
   res.setHeader("Content-Type", "application/json");
@@ -99,10 +98,10 @@ function error(req, res) {
 }
 
 module.exports = {
-  idCliente,
   grabarUsuario,
   actualizarUsuario,
   login,
+  documento,
   consultar,
   error
 };
