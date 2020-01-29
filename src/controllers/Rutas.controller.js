@@ -5,12 +5,14 @@ async function idUsuario(req, res) {
   res.setHeader("Content-Type", "application/json");
   const idUsuario = req.params.idUsuario;
   try {
-    var rutero = [];
-    var clientes = await Ruta.find({ idUsuario,visitado:false });
-    if(clientes.length<=0){
-       res.status(201).send({res:"no hay ruta asignada"});
+    var clientes = await Ruta.find({ idUsuario, visitado: false });
+    if (clientes.length <= 0) {
+      res.status(201).send({ res: "no hay ruta asignada" });
     }
+    var clientes2 = [];
     clientes.map(async (cliente, i) => {
+      console.log("vuelta " + i);
+
       const facturas = await conexionFirebird.queryDB(
         "select docuid as id, detalle, saldo, valor from documento where terid= ? and saldo>0 and codcomp='FV'",
         [cliente.idTNS]
@@ -24,37 +26,10 @@ async function idUsuario(req, res) {
           valor: factura.VALOR
         });
       });
-      const {
-        _id,
-        novedad,
-        barrio,
-        visitado,
-        creado,
-        nombre,
-        direccion,
-        idUsuario,
-        idTNS,
-        documento,
-        telefono
-      } = cliente;
-      const ruta = {
-        _id,
-        novedad,
-        barrio,
-        visitado,
-        creado,
-        nombre,
-        direccion,
-        idUsuario,
-        idTNS,
-        documento,
-        telefono,
-        carteras
-      };
-      rutero.push(ruta);
-      if (clientes.length === i + 1) {
-        res.status(200).send(rutero);
-      }
+      cliente.cartera = carteras;
+      clientes2.push(cliente);
+
+      if (clientes.length == clientes2.length) res.status(200).send(clientes);
     });
   } catch (err) {
     console.log(err);
@@ -65,14 +40,18 @@ async function idUsuario(req, res) {
 async function ruteroUsuario(req, res) {
   res.setHeader("Content-Type", "application/json");
   console.log(req.query);
-  const {idUsuario, fecha} = req.query
-  const fec =Date.parse(fecha)
-  
+  const { idUsuario, fecha } = req.query;
+  const fec = Date.parse(fecha);
+
   try {
-    var clientes = await Ruta.find({ idUsuario,visitado:true,creado:{"$lte": fec}});
-    if(clientes.length<=0){
-       res.status(201).send({res:"no hay ruta recorrida"});
-    }else{
+    var clientes = await Ruta.find({
+      idUsuario,
+      visitado: true,
+      creado: { $lte: fec }
+    });
+    if (clientes.length <= 0) {
+      res.status(201).send({ res: "no hay ruta recorrida" });
+    } else {
       res.status(200).send(clientes);
     }
   } catch (err) {
@@ -84,33 +63,33 @@ async function ruteroUsuario(req, res) {
 async function agregarRutaTotal(req, res) {
   res.setHeader("Content-Type", "application/json");
   const {
-  barrio,
-  direccion,
-  documento,
-  idTNS,
-  latitude,
-  longitude,
-  nombre,
-  novedad,
-  telefono,
-  ultVisita,
-  visitado,
-  idUsuario
+    barrio,
+    direccion,
+    documento,
+    idTNS,
+    latitude,
+    longitude,
+    nombre,
+    novedad,
+    telefono,
+    ultVisita,
+    visitado,
+    idUsuario
   } = req.body;
-    
+
   const nuevaRuta = new Ruta({
-  idUsuario,
-  barrio,
-  direccion,
-  documento,
-  idTNS,
-  latitude,
-  longitude,
-  nombre,
-  novedad,
-  telefono,
-  ultVisita,
-  visitado
+    idUsuario,
+    barrio,
+    direccion,
+    documento,
+    idTNS,
+    latitude,
+    longitude,
+    nombre,
+    novedad,
+    telefono,
+    ultVisita,
+    visitado
   });
   try {
     await nuevaRuta.save();
@@ -122,7 +101,7 @@ async function agregarRutaTotal(req, res) {
 
 async function guardarRuta(req, res) {
   res.setHeader("Content-Type", "application/json");
-    
+
   const {
     documento,
     telefono,
@@ -145,7 +124,7 @@ async function guardarRuta(req, res) {
     await nuevaRuta.save();
     res.status(200).send({ res: "Guardado Correctamente" });
   } catch (err) {
-    res.status(400).send({ err:err });
+    res.status(400).send({ err: err });
   }
 }
 
