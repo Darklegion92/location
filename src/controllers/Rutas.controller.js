@@ -39,15 +39,24 @@ async function idUsuario(req, res) {
 
 async function ruteroUsuario(req, res) {
   res.setHeader("Content-Type", "application/json");
-  console.log(req.query);
+
   const { idUsuario, fecha } = req.query;
-  const fec = Date.parse(fecha);
+  /*const pru = new Date.parse(fecha).toLocaleDateString();
+  console.log(pru);*/
+  const fechaA = new Date(fecha);
+  const otraI = new Date(fechaA.toLocaleDateString("en-US"));
+  const otraF = otraI;
+
+  const fechaI = new Date(otraI.setDate(otraI.getDate()));
+  console.log(fechaI);
+  const fechaF = new Date(otraF.setDate(otraF.getDate() + 1));
+  console.log(fechaF);
 
   try {
     var clientes = await Ruta.find({
       idUsuario,
       visitado: true,
-      creado: { $lte: fec }
+      ultVisita: { $gte: fechaI, $lt: fechaF }
     });
     if (clientes.length <= 0) {
       res.status(201).send({ res: "no hay ruta recorrida" });
