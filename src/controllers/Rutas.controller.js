@@ -1,18 +1,27 @@
 const Ruta = require("../models/Rutas.model");
 const conexionFirebird = require("../services/conectionFirebird");
 
-async function idUsuario(req, res) {
+/*Genera el rutero del dia para el cliente
+ *Requiere: parametro de idUsuario y diaSemana
+ */
+async function ruteroDia(req, res) {
   res.setHeader("Content-Type", "application/json");
-  const idUsuario = req.params.idUsuario;
+
+  const { idUsuario, diaSemana } = req.query;
+
+  //consula la tabla de clientes
   try {
-    var clientes = await Ruta.find({ idUsuario, visitado: false });
+    var clientes = await Ruta.find({
+      idUsuario,
+      visitado: false,
+      diaSemana
+    });
     if (clientes.length <= 0) {
       res.status(201).send({ res: "no hay ruta asignada" });
     }
     var clientes2 = [];
     clientes.map(async (cliente, i) => {
-      console.log("vuelta " + i);
-
+      //consulta la cartera de los clientes por facturas
       const facturas = await conexionFirebird.queryDB(
         "select docuid as id, detalle, saldo, valor from documento where terid= ? and saldo>0 and codcomp='FV'",
         [cliente.idTNS]
@@ -26,6 +35,7 @@ async function idUsuario(req, res) {
           valor: factura.VALOR
         });
       });
+
       cliente.cartera = carteras;
       clientes2.push(cliente);
 
@@ -37,21 +47,22 @@ async function idUsuario(req, res) {
   }
 }
 
-async function ruteroUsuario(req, res) {
+/*Genera la información de la ruta realizada con el cliente
+ *Requiere: Requiere: parametro de idUsuario y fecha
+ */
+async function informeRutas(req, res) {
   res.setHeader("Content-Type", "application/json");
 
   const { idUsuario, fecha } = req.query;
-  /*const pru = new Date.parse(fecha).toLocaleDateString();
-  console.log(pru);*/
+  //se formatea la fecha para poder hacer la consulta en mongo DB
   const fechaA = new Date(fecha);
   const otraI = new Date(fechaA.toLocaleDateString("en-US"));
   const otraF = otraI;
 
   const fechaI = new Date(otraI.setDate(otraI.getDate()));
-  console.log(fechaI);
   const fechaF = new Date(otraF.setDate(otraF.getDate() + 1));
-  console.log(fechaF);
 
+  //Se consultan los clientes con todos los datos recopilados en la ruta
   try {
     var clientes = await Ruta.find({
       idUsuario,
@@ -69,8 +80,13 @@ async function ruteroUsuario(req, res) {
   }
 }
 
-async function agregarRutaTotal(req, res) {
+/*Guarda la ruta que realiza el usuario desde la aplicacion movil
+ *Requiere: barrio,direccion, documento,idTNS,latitude,longitude, 
+ nombre, novedad, telefono, ultVisita, visitado, idUsuario
+ */
+async function guardarVisita(req, res) {
   res.setHeader("Content-Type", "application/json");
+
   const {
     barrio,
     direccion,
@@ -108,6 +124,9 @@ async function agregarRutaTotal(req, res) {
   }
 }
 
+/* Guarda la ruta por dias para las visitas
+ * Requiere: documento, telefono, nombre, idUsuario, idTNS, direccion, barrio, diaSemana
+ */
 async function guardarRuta(req, res) {
   res.setHeader("Content-Type", "application/json");
 
@@ -118,8 +137,11 @@ async function guardarRuta(req, res) {
     idUsuario,
     idTNS,
     direccion,
-    barrio
+    barrio,
+    diaSemana
   } = req.body;
+  console.log(diaSemana);
+
   const nuevaRuta = new Ruta({
     documento,
     telefono,
@@ -127,8 +149,10 @@ async function guardarRuta(req, res) {
     idUsuario,
     idTNS,
     direccion,
-    barrio
+    barrio,
+    diaSemana
   });
+
   try {
     await nuevaRuta.save();
     res.status(200).send({ res: "Guardado Correctamente" });
@@ -137,19 +161,17 @@ async function guardarRuta(req, res) {
   }
 }
 
-async function consultar(req, res) {
-  res.setHeader("Content-Type", "application/json");
-}
-
+/*
+ *Toda ruta no existente se redirecciona a esta URL
+ */
 function error(req, res) {
   res.status(404).send({ error: "Página no encontrada" });
 }
 
 module.exports = {
-  idUsuario,
-  ruteroUsuario,
+  ruteroDia,
+  informeRutas,
+  guardarVisita,
   guardarRuta,
-  consultar,
-  error,
-  agregarRutaTotal
+  error
 };

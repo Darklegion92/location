@@ -62,6 +62,9 @@ const RutasSchema = new Schema({
   creado: {
     type: Date,
     default: Date.now()
+  },
+  diaSemana:{
+    type:Number
   }
 });
 const Rutas = model("Rutas", RutasSchema);

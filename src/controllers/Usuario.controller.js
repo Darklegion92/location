@@ -67,10 +67,11 @@ async function actualizarUsuario(req, res) {
   const { id, password } = req.body;
 
   try {
-    const resp = await Usuario.updateOne({ id }, { password });
-    console.log(resp);
+    const resp = await Usuario.updateOne({ id, password });
 
-    res.status(200).send({ res: "Guardado Correctamente" });
+    if (resp.nModified > 0)
+      res.status(200).send({ res: "Guardado Correctamente" });
+    else res.status(201).send({ res: "Usuario No Encontrado" });
   } catch (err) {
     res.status(400).send({ err });
   }
