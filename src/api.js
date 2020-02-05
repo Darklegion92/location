@@ -7,6 +7,7 @@ const usauriosRouter = require("./routes/Usuarios.routes");
 const locationRouter = require("./routes/Location.routes");
 const rutasRouter = require("./routes/Rutas.routes");
 const clientesRouter = require("./routes/Clientes.routes");
+const novedadesRouter = require("./routes/Novedades.routes");
 
 const CONFIG = require("./config/config");
 
@@ -30,6 +31,7 @@ APP.use("/usuario", usauriosRouter);
 APP.use("/location", locationRouter);
 APP.use("/rutas", rutasRouter);
 APP.use("/clientes", clientesRouter);
+APP.use("/novedades", novedadesRouter);
 
 //Elementos Estaticos
 APP.use(express.static("public"));

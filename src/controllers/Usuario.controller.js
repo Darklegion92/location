@@ -1,4 +1,5 @@
 const Usuario = require("../models/Usuarios.model");
+const service = require("../services/service");
 
 async function id(req, res) {
   res.setHeader("Content-Type", "application/json");
@@ -36,8 +37,16 @@ async function login(req, res) {
   try {
     const { usuario, password } = req.body;
     user = await Usuario.find({ usuario, password });
+    //rearmar para enviar token jwt
     if (user[0]) {
-      res.status(200).send(user[0]);
+      let rest = {
+        nombre: user[0].nombre,
+        usuario: user[0].usuario,
+        creado: user[0].creado,
+        _id:user[0]._id,
+        Autorization_key: service.createToken(user[0])
+      };
+      res.status(200).send(rest);
     } else {
       res.status(201).send({ res: "Usuario o Clave No Validos", status: 201 });
     }

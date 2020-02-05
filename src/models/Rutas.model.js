@@ -21,7 +21,7 @@ const RutasSchema = new Schema({
     default: false
   },
   idNovedad: {
-    type: Number,
+    type: String,
   },
   telefono: {
     type: String,
