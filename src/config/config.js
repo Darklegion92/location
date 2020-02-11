@@ -1,7 +1,7 @@
 module.exports = {
   PORT: process.env.PORT || 3001,
   DB_FIREBIRD:
-    process.env.FIREBIRD_URI || "D:/TNS/TNS.FDB",
+    process.env.FIREBIRD_URI || "D:/TNS/TNS.GDB",
   SECRET_TOKEN: "SOLTEC-tecnologiaydesarrollo$",
   DB_MONGO: process.env.DB_MOMGO || "mongodb://localhost:27017/geolocalizacion",
   PORT_DB_FIREBIRD: process.env.PORT_DB_FIREBIRD || 3050,

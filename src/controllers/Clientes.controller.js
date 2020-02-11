@@ -41,6 +41,8 @@ async function documento(req, res) {
         [cliente.idTNS]
       );
       const carteras = [];
+      console.log(facturas.length);
+      
       facturas.map(factura => {
         carteras.push({
           id: factura.ID,
@@ -51,6 +53,7 @@ async function documento(req, res) {
       });
       //se agregan las carteras
       cliente.carteras = carteras;
+      //console.log(cliente);
       res.status(200).send(cliente);
     } else {
       res.status(201).send({ res: "Cliente no Existe" });
