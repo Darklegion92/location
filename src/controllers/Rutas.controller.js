@@ -88,6 +88,7 @@ async function informeRutas(req, res) {
  */
 async function guardarVisita(req, res) {
   res.setHeader("Content-Type", "application/json");
+  console.log(req.body);
 
   const {
     barrio,
@@ -125,7 +126,7 @@ async function guardarVisita(req, res) {
     res.status(200).send({ res: "Guardado Correctamente" });
   } catch (err) {
     console.log(err);
-    
+
     res.status(400).send({ err });
   }
 }

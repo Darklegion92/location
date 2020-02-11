@@ -41,8 +41,6 @@ async function documento(req, res) {
         [cliente.idTNS]
       );
       const carteras = [];
-      console.log(facturas.length);
-      
       facturas.map(factura => {
         carteras.push({
           id: factura.ID,
@@ -53,7 +51,6 @@ async function documento(req, res) {
       });
       //se agregan las carteras
       cliente.carteras = carteras;
-      //console.log(cliente);
       res.status(200).send(cliente);
     } else {
       res.status(201).send({ res: "Cliente no Existe" });
@@ -64,11 +61,11 @@ async function documento(req, res) {
     res.status(200).send({ res: error });
   }
 }
-async function grabarUsuario(req, res) {
+async function guardarCartera(req, res) {
   res.setHeader("Content-Type", "application/json");
-  /*const { nombre, usuario, password } = req.body;
+  //const { nombre, usuario, password } = req.body;
 
-  const nuevoUsuario = new Usuario({
+ /*const nuevoUsuario = new Usuario({
     nombre,
     usuario,
     password
@@ -131,7 +128,7 @@ function error(req, res) {
 }
 
 module.exports = {
-  grabarUsuario,
+  guardarCartera,
   actualizarUsuario,
   login,
   documento,
