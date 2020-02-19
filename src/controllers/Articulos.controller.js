@@ -10,17 +10,17 @@ async function nombre(req, res) {
   try {
     //se consulta el Articulo
     const datos = await conexionFirebird.queryDB(
-      "select a.matid as id, a.descrip as nombre, i.existenc as inventario FROM material a, MATERIALSUC i WHERE a.matid = i.matid and a.descrip LIKE ?",
+      "select a.matid as id, a.descrip as nombre, i.existenc as inventario, i.precio1 as precio FROM material a, MATERIALSUC i WHERE a.matid = i.matid and a.descrip LIKE ?",
       ["%" + nombre.toUpperCase() + "%"]
     );
-
-    if (datos) {
+    if (datos[0]) {
       let articulos = [];
       datos.map(dato => {
         const articulo = {
           id: dato.ID.toString(),
           nombre: dato.NOMBRE.toString(),
-          inventario: dato.INVENTARIO.toString()
+          inventario: dato.INVENTARIO,
+          precio:dato.PRECIO
         };
         articulos.push(articulo);
       });
