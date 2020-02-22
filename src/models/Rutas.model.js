@@ -25,7 +25,6 @@ const RutasSchema = new Schema({
   },
   telefono: {
     type: String,
-    required: true,
     lowercase: true
   },
   nombre: {

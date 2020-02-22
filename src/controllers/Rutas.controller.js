@@ -147,7 +147,7 @@ async function guardarRuta(req, res) {
     barrio,
     diaSemana
   } = req.body;
-  console.log(diaSemana);
+  //console.log(req.body);
 
   const nuevaRuta = new Ruta({
     documento,
@@ -161,9 +161,12 @@ async function guardarRuta(req, res) {
   });
 
   try {
+      
     await nuevaRuta.save();
     res.status(200).send({ res: "Guardado Correctamente" });
   } catch (err) {
+    console.log(err);
+    
     res.status(400).send({ err: err });
   }
 }
