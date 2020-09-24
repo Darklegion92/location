@@ -1,5 +1,5 @@
 module.exports = {
-  PORT: process.env.PORT || 3001,
+  PORT: process.env.PORT || 3005,
   DB_FIREBIRD:
     process.env.FIREBIRD_URI || "D:/TNS/TNS.GDB",
   SECRET_TOKEN: "SOLTEC-tecnologiaydesarrollo$",
