@@ -1,19 +1,32 @@
 const Usuario = require("../models/Usuarios.model");
 const service = require("../services/service");
-
+const axios = require("axios");
+const querystring = require("querystring");
 async function id(req, res) {
   res.setHeader("Content-Type", "application/json");
-  /*var con = conexionMYSQL.con;
-  const sql = "SELECT idCliente FROM clientes WHERE idFacebook = ?";
-  const parametros = [req.params.id];
-  await con.query(sql, parametros, function(err, result) {
-    if (err) throw err;
-    if (result) res.status(200).send(result);
-    res.status(201);
-  });
   try {
-    con.release();
-  } catch (e) {}*/
+    const token = await axios({
+      method: "POST",
+      url: "https://siigonube.siigo.com:50050/connect/token",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization:
+          "Basic U2lpZ29XZWI6QUJBMDhCNkEtQjU2Qy00MEE1LTkwQ0YtN0MxRTU0ODkxQjYx",
+        Accept: "application/json",
+      },
+      data: querystring.stringify({
+        "grant_type": "s112pempresa2#",
+        "username": "EMPRESA2CAPACITACION/empresa2@apionmicrosoft.com",
+        "password": "s112pempresa2#",
+        "scope": "WebApi offline_access",
+      }),
+    });
+    console.log(token);
+    res.status(200).send({ mensaje: token });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
 }
 async function grabarUsuario(req, res) {
   res.setHeader("Content-Type", "application/json");
@@ -22,7 +35,7 @@ async function grabarUsuario(req, res) {
   const nuevoUsuario = new Usuario({
     nombre,
     usuario,
-    password
+    password,
   });
   try {
     await nuevoUsuario.save();
@@ -43,8 +56,8 @@ async function login(req, res) {
         nombre: user[0].nombre,
         usuario: user[0].usuario,
         creado: user[0].creado,
-        _id:user[0]._id,
-        Autorization_key: service.createToken(user[0])
+        _id: user[0]._id,
+        Autorization_key: service.createToken(user[0]),
       };
       res.status(200).send(rest);
     } else {
@@ -96,5 +109,5 @@ module.exports = {
   actualizarUsuario,
   login,
   consultar,
-  error
+  error,
 };
