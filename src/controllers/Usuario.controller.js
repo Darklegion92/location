@@ -1,28 +1,23 @@
 const Usuario = require("../models/Usuarios.model");
 const service = require("../services/service");
-const axios = require("axios");
-const querystring = require("querystring");
+const axios = require("axios").default;
+const { SIIGO_SUSCRIPTION } = require("../config/config");
+
 async function id(req, res) {
   res.setHeader("Content-Type", "application/json");
+  const { access_token } = req.token;
   try {
-    const token = await axios({
-      method: "POST",
-      url: "https://siigonube.siigo.com:50050/connect/token",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization:
-          "Basic U2lpZ29XZWI6QUJBMDhCNkEtQjU2Qy00MEE1LTkwQ0YtN0MxRTU0ODkxQjYx",
-        Accept: "application/json",
-      },
-      data: querystring.stringify({
-        "grant_type": "s112pempresa2#",
-        "username": "EMPRESA2CAPACITACION/empresa2@apionmicrosoft.com",
-        "password": "s112pempresa2#",
-        "scope": "WebApi offline_access",
-      }),
-    });
-    console.log(token);
-    res.status(200).send({ mensaje: token });
+    const result = await axios.get(
+      "http://siigoapi.azure-api.net/siigo/api/v1/Products/GetAll?numberPage=2&namespace=30",
+      {
+        headers: {
+          "Ocp-Apim-Subscription-Key": SIIGO_SUSCRIPTION,
+          Authorization: access_token,
+        },
+      }
+    );
+    console.log(result);
+    res.status(200).send(result.data);
   } catch (e) {
     console.log(e);
     res.status(500).send(e);
