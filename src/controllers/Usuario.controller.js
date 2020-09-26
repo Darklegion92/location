@@ -8,7 +8,7 @@ async function id(req, res) {
   const { access_token } = req.token;
   try {
     const result = await axios.get(
-      "http://siigoapi.azure-api.net/siigo/api/v1/Products/GetAll?numberPage=2&namespace=30",
+      "http://siigoapi.azure-api.net/siigo/api/v1/Accounts/GetByCode?identification=001&branchOffice=000&namespace=1",
       {
         headers: {
           "Ocp-Apim-Subscription-Key": SIIGO_SUSCRIPTION,

@@ -1,56 +1,37 @@
 const conexionFirebird = require("../services/conectionFirebird");
-
+const axios = require("axios").default;
+const { SIIGO_SUSCRIPTION } = require("../config/config");
 /**
  * consultar cliente por documento
  */
 async function documento(req, res) {
   res.setHeader("Content-Type", "application/json");
   const documento = req.params.documento;
+  const { access_token } = req.token;
   try {
     //se consulta el cliente
-    const datos = await conexionFirebird.queryDB(
-      "select terid AS idTNS, nit as documento,  t.nombre, direcc1 as direccion, z.nombre as barrio, telef1 as telefono  from terceros t, zonas z where z.ZONAID = t.zona1 and nit = ?",
-      [documento]
+
+    const datos = await axios.get(
+      "http://siigoapi.azure-api.net/siigo/api/v1/Accounts/GetByCode?identification=" +
+        documento +
+        "&branchOffice=000&namespace=1",
+      {
+        headers: {
+          "Ocp-Apim-Subscription-Key": SIIGO_SUSCRIPTION,
+          Authorization: access_token,
+        },
+      }
     );
-
-    if (datos) {
-      var cliente = {};
-      datos.map(data => { 
-         let barrio,direccion,telefono;
-        try {
-           direccion= data.DIRECCION.toString()
-          barrio= data.BARRIO.toString()
-          telefono= data.TELEFONO.toString()
-        } catch (error) {
-        }
-
-        cliente = {
-          idTNS: data.IDTNS,
-          documento: data.DOCUMENTO.toString(),
-          nombre: data.NOMBRE.toString(),
-          direccion,
-          barrio,
-          telefono,
-          carteras: []
-        };
-      });
-      //se consultan las carteras del cliente
-
-      const facturas = await conexionFirebird.queryDB(
-        "select docuid as id, detalle, saldo, valor from documento where terid= ? and saldo>0 and codcomp='FV'",
-        [cliente.idTNS]
-      );
-      const carteras = [];
-      facturas.map(factura => {
-        carteras.push({
-          id: factura.ID,
-          detalle: factura.DETALLE.toString(),
-          saldo: factura.SALDO,
-          valor: factura.VALOR
-        });
-      });
-      //se agregan las carteras
-      cliente.carteras = carteras;
+    console.log(datos.data);
+    if (datos.data.Id!==0) {
+      var cliente = {
+        idSIIGO: datos.data.Id,
+        documento: datos.data.Identification,
+        nombre: datos.data.FullName,
+        direccion:datos.data.Address,
+        telefono:datos.data.Phone.Number,
+        carteras: [],
+      };
       res.status(200).send(cliente);
     } else {
       res.status(201).send({ res: "Cliente no Existe" });
@@ -65,7 +46,7 @@ async function guardarCartera(req, res) {
   res.setHeader("Content-Type", "application/json");
   //const { nombre, usuario, password } = req.body;
 
- /*const nuevoUsuario = new Usuario({
+  /*const nuevoUsuario = new Usuario({
     nombre,
     usuario,
     password
@@ -133,5 +114,5 @@ module.exports = {
   login,
   documento,
   consultar,
-  error
+  error,
 };

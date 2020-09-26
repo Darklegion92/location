@@ -36,7 +36,7 @@ const RutasSchema = new Schema({
     type: String,
     required: true
   },
-  idTNS: {
+  idSIIGO: {
     type: Number,
     required: true
   },
@@ -44,12 +44,6 @@ const RutasSchema = new Schema({
     type: String,
     required: true,
     lowercase: true
-  },
-  barrio: {
-    type: String,
-    required: true,
-    lowercase: true,
-    default: "sin barrio"
   },
   ultVisita: {
     type: Date

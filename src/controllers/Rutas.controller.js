@@ -21,28 +21,6 @@ async function ruteroDia(req, res) {
     } else {
       res.status(200).send(clientes);
     }
-    /*var clientes2 = [];
-    clientes.map(async (cliente, i) => {
-      //consulta la cartera de los clientes por facturas
-      const facturas = await conexionFirebird.queryDB(
-        "select docuid as id, detalle, saldo, valor from documento where terid= ? and saldo>0 and codcomp='FV'",
-        [cliente.idTNS]
-      );
-      const carteras = [];
-      facturas.map(factura => {
-        carteras.push({
-          id: factura.ID,
-          detalle: factura.DETALLE.toString(),
-          saldo: factura.SALDO,
-          valor: factura.VALOR
-        });
-      });
-
-      cliente.cartera = carteras;
-      clientes2.push(cliente);
-
-      if (clientes.length == clientes2.length) res.status(200).send(clientes);
-    });*/
   } catch (err) {
     console.log(err);
     res.status(500).send({ err });
@@ -94,7 +72,7 @@ async function guardarVisita(req, res) {
     barrio,
     direccion,
     documento,
-    idTNS,
+    idSIIGO,
     latitude,
     longitude,
     nombre,
@@ -105,13 +83,13 @@ async function guardarVisita(req, res) {
     visitado,
     idUsuario
   } = req.body;
-
+  console.log(req.body);
   const nuevaRuta = new Ruta({
     idUsuario,
     barrio,
     direccion,
     documento,
-    idTNS,
+    idSIIGO,
     latitude,
     longitude,
     idNovedad,
@@ -142,21 +120,18 @@ async function guardarRuta(req, res) {
     telefono,
     nombre,
     idUsuario,
-    idTNS,
+    idSIIGO,
     direccion,
-    barrio,
     diaSemana
   } = req.body;
-  //console.log(req.body);
 
   const nuevaRuta = new Ruta({
     documento,
     telefono,
     nombre,
     idUsuario,
-    idTNS,
+    idSIIGO,
     direccion,
-    barrio,
     diaSemana
   });
 
