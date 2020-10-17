@@ -1,8 +1,8 @@
 const { Router } = require("express");
-const ClientesCtrl = require("../controllers/Clientes.controller");
+const CarterasCtrl = require("../controllers/Carteras.controller");
 const { token } = require("../middlewares/conexionSiigo");
 const router = Router();
 router
-  .get("/consultar/", token, ClientesCtrl.consultar)
-  .get("/*", ClientesCtrl.error);
+  .get("/consultar", token, CarterasCtrl.consultar)
+  .get("/*", CarterasCtrl.error);
 module.exports = router;

@@ -9,10 +9,16 @@ const rutasRouter = require("./routes/Rutas.routes");
 const clientesRouter = require("./routes/Clientes.routes");
 const novedadesRouter = require("./routes/Novedades.routes");
 const articulosRouter = require("./routes/Articulos.routes");
-
+const visitasRouter = require("./routes/Visitas.routes");
+const facturasRouter = require("./routes/Facturas.routes");
+const carterasRouter = require("./routes/Carteras.routes");
+const {iniciarServicios} = require("./services/consultarApi");
 const CONFIG = require("./config/config");
 
 const APP = express();
+
+//procesos iniciales
+iniciarServicios();
 
 //MiddelWare
 APP.use(cors());
@@ -22,7 +28,7 @@ APP.use(
   session({
     secret: CONFIG.SECRET_TOKEN,
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
   })
 );
 APP.use(morgan("dev"));
@@ -34,6 +40,9 @@ APP.use("/rutas", rutasRouter);
 APP.use("/clientes", clientesRouter);
 APP.use("/novedades", novedadesRouter);
 APP.use("/articulos", articulosRouter);
+APP.use("/visitas", visitasRouter);
+APP.use("/facturas", facturasRouter);
+APP.use("/carteras", carterasRouter);
 
 //Elementos Estaticos
 APP.use(express.static("public"));

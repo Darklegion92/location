@@ -5,11 +5,10 @@ const Novedades = require("../models/Novedades.model");
  */
 async function consultar(req, res) {
   res.setHeader("Content-Type", "application/json");
-
+  console.log(req.headers);
   //consula la tabla de novedaes
   try {
     var novedades = await Novedades.find();
-
     if (novedades.length > 0) {
       res.status(200).send(novedades);
     } else {
@@ -30,5 +29,5 @@ function error(req, res) {
 
 module.exports = {
   consultar,
-  error
+  error,
 };

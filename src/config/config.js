@@ -1,5 +1,5 @@
 module.exports = {
-  PORT: process.env.PORT || 3001,
+  PORT: process.env.PORT || 3002,
   DB_FIREBIRD: process.env.FIREBIRD_URI || "D:/TNS/TNS.GDB",
   SECRET_TOKEN: "SOLTEC-tecnologiaydesarrollo$",
   DB_MONGO: process.env.DB_MOMGO || "mongodb://localhost:27017/geolocalizacion",
@@ -17,4 +17,14 @@ module.exports = {
   SIIGO_PASSWORD: process.env.SIIGO_USERNAME || "s112pempresa2#",
   SIIGO_SUSCRIPTION:
     process.env.SIIGO_SUSCRIPTION || "1bacb007e08a41c8a17d728be643ae63",
+
+  SIIGO_PARAMETROS:{
+    DocCode: 45451,//codigo de la factura
+    SalesmanIdentification: "1070329610",//identificacion
+    CityCode: "54001",//codigo de la ciudad
+    StateCode: "54",//codigo del estado o departamento
+    CountryCode: "Co", //codigo del pais
+    PaymentMeansCode:9087,
+    IdTypeCode:13//codigo del medio de pago en este caso cartera
+  },
 };

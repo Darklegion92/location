@@ -17,6 +17,11 @@ const UsuariosSchema = new Schema({
     required: true,
     select: false
   },
+  rol:{
+    type:String,
+    required:true,
+    default:"Vendedor"
+  },
   creado: {
     type: Date,
     default: Date.now()

@@ -1,30 +1,75 @@
-const Ruta = require("../models/Rutas.model");
-const conexionFirebird = require("../services/conectionFirebird");
-
+const Ruta = require("../models/Visitas.model");
+const axios = require("axios").default;
+const qs = require("qs");
+const { SIIGO_SUSCRIPTION } = require("../config/config");
 /*Genera el rutero del dia para el cliente
  *Requiere: parametro de idUsuario y diaSemana
  */
-async function ruteroDia(req, res) {
+async function guardarRecibo(req, res) {
   res.setHeader("Content-Type", "application/json");
 
-  const { idUsuario, diaSemana } = req.query;
+  const {
+    idUsuario,
+    idClienteSIIGO,
+    fullName,
+    documentoCliente,
+    direccion,
+    telefono,
+    latitude,
+    longitude,
+  } = req.query;
 
   //consula la tabla de clientes
-  let dia = new Date().getDay();
-  if (diaSemana) {
-    dia = diaSemana;
-  }
-
+  const { access_token } = req.token;
   try {
-    var clientes = await Ruta.find({
+    //se consulta el cliente
+
+    const datos = await axios.get(
+      "http://siigoapi.azure-api.net/siigo/api/v1/Invoice/GetAll?numberPage=2&namespace=v1",
+      {
+        headers: {
+          "Ocp-Apim-Subscription-Key": SIIGO_SUSCRIPTION,
+          Authorization: access_token,
+        },
+      }
+    );
+
+    /* const datos = await axios.post(
+      "http://siigoapi.azure-api.net/siigo/api/v1/Voucher/Save?namespace=v1",
+      qs.stringify({
+        Header: {
+          DocCode: 6617,
+          DocDate: "20200926",
+          TotalValue: 5000,
+          Identification: "001",
+          BranchOffice: 000,
+          VoucherType: 0,
+          PaymentMeanCode: 9027,
+          Observations: "PRUEBA DE ALGO QUE SE ESTA HACIENDO",
+        },
+        Items: [],
+      }),
+      {
+        headers: {
+          "Ocp-Apim-Subscription-Key": SIIGO_SUSCRIPTION,
+          Authorization: access_token,
+        },
+      }
+    );*/
+    //console.log(datos);
+    /* var visita = await Ruta.save({
       idUsuario,
-      diaSemana: dia,
-    });
-    if (clientes.length <= 0) {
-      res.status(201).send({ res: "no hay ruta asignada" });
-    } else {
-      res.status(200).send(clientes);
-    }
+      tipo: true,
+      efectiva: true,
+      documentoCliente,
+      fullName,
+      direccion,
+      telefono,
+      latitude,
+      longitude,
+    });*/
+
+    res.status(200).send(datos.data);
   } catch (err) {
     console.log(err);
     res.status(500).send({ err });
@@ -157,9 +202,6 @@ function error(req, res) {
 }
 
 module.exports = {
-  ruteroDia,
-  informeRutas,
-  guardarVisita,
-  guardarRuta,
+  guardarRecibo,
   error,
 };

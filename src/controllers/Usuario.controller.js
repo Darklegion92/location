@@ -47,12 +47,13 @@ async function login(req, res) {
     user = await Usuario.find({ usuario, password });
     //rearmar para enviar token jwt
     if (user[0]) {
-      let rest = {
+      const rest = {
         nombre: user[0].nombre,
         usuario: user[0].usuario,
         creado: user[0].creado,
-        _id: user[0]._id,
-        Autorization_key: service.createToken(user[0]),
+        idUsuario: user[0]._id,
+        autorization_key: service.createToken(user[0]),
+        rol:user[0].rol,
       };
       res.status(200).send(rest);
     } else {
