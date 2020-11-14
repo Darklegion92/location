@@ -87,25 +87,12 @@ async function consultarFacturasSiigo (req, res) {
 
 async function carteraCliente (req, res) {
   res.setHeader('Content-Type', 'application/json')
-  const { documento } = req.params
 
   const sumaFactura = await Factura.aggregate([
     {
       $group: {
-        _id: null,
-        totalValue: { $sum: '$TotalValue' },
-        enabledValue: {
-          $sum: {
-            $cond: [
-              // Condition to test
-              { Identification: documento },
-              // True
-              '$value',
-              // False
-              0
-            ]
-          }
-        }
+        _id: { Identification: '$Identification' },
+        totalValue: { $sum: '$TotalValue' }
       }
     }
   ])
@@ -113,26 +100,12 @@ async function carteraCliente (req, res) {
   const sumaRecibos = await Recibo.aggregate([
     {
       $group: {
-        _id: null,
-        totalValue: { $sum: '$TotalValue' },
-        enabledValue: {
-          $sum: {
-            $cond: [
-              // Condition to test
-              { Identification: documento },
-              // True
-              '$value',
-              // False
-              0
-            ]
-          }
-        }
+        _id: { Identification: '$Identification' },
+        totalValue: { $sum: '$TotalValue' }
       }
     }
   ])
-  const cartera = sumaFactura[0].totalValue - sumaRecibos[0].totalValue
-
-  res.status(200).send({ cartera })
+  res.status(200).send({ sumaFactura, sumaRecibos })
 }
 
 function error (req, res) {

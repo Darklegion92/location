@@ -5,6 +5,6 @@ const router = Router()
 router
   .get('/consultar/recibossiigo', token, CarterasCtrl.consultarRecibosSiigo)
   .get('/consultar/facturassiigo', token, CarterasCtrl.consultarFacturasSiigo)
-  .get('/consultar/:documento', CarterasCtrl.carteraCliente)
+  .get('/consultar/', CarterasCtrl.carteraCliente)
   .get('/*', CarterasCtrl.error)
 module.exports = router
