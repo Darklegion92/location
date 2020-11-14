@@ -1,47 +1,147 @@
-const axios = require("axios").default;
-const { SIIGO_SUSCRIPTION } = require("../config/config");
+const axios = require('axios').default
+const { SIIGO_SUSCRIPTION } = require('../config/config')
+const Recibo = require('../models/Recibo.model')
+const Factura = require('../models/Factura.model')
 /**
  * consultar cliente por documento
  */
-async function consultar(req, res) {
-  res.setHeader("Content-Type", "application/json");
-  const { access_token } = req.token;
-  let datos = [];
-  //se consulta el Articulo
-
-  for (let p = 0; p <= 200; p++) {
-    try {
-      const resp = await axios.get(
-        "http://siigoapi.azure-api.net/siigo/api/v1/Voucher/GetAll?numberPage=" +
+async function consultarRecibosSiigo (req, res) {
+  res.setHeader('Content-Type', 'application/json')
+  const { access_token } = req.token
+  try {
+    //se consulta el Articulo
+    let resp
+    for (let p = 0; p <= 500; p++) {
+      resp = await axios.get(
+        'http://siigoapi.azure-api.net/siigo/api/v1/Voucher/GetAll?numberPage=' +
           p +
-          "&namespace=v1",
+          '&namespace=v1',
         {
           headers: {
-            "Ocp-Apim-Subscription-Key": SIIGO_SUSCRIPTION,
-            Authorization: access_token,
-          },
+            'Ocp-Apim-Subscription-Key': SIIGO_SUSCRIPTION,
+            Authorization: access_token
+          }
         }
-      );
-
-      datos = datos.concat(resp.data);
-    } catch (e) {
-      console.log(e);
-      break;
+      )
+      if (resp.status === 200) {
+        resp.data.forEach(async data => {
+          const recibo = new Recibo({
+            IdSiigo: data.Id,
+            Number: data.Number,
+            ERPDocName: data.ERPDocName,
+            ERPDocDate: data.ERPDocDate,
+            Identification: data.Identification,
+            AccountName: data.AccountName,
+            TotalValue: data.TotalValue,
+            CountItems: data.CountItems
+          })
+          await recibo.save().catch(e => {})
+        })
+      } else break
     }
-  }
-  if (datos.length > 0) {
-    console.log(datos.length);
-    res.status(200).send(datos);
-  } else {
-    res.status(201).send({ res: "No hay datos registrados" });
+    res.status(200).send(resp.data)
+  } catch (e) {
+    res.status(500).send({ res: error })
   }
 }
 
-function error(req, res) {
-  res.status(404).send({ error: "Página no encontrada" });
+async function consultarFacturasSiigo (req, res) {
+  res.setHeader('Content-Type', 'application/json')
+  const { access_token } = req.token
+  try {
+    //se consulta el Articulo
+    let resp
+    for (let p = 0; p <= 500; p++) {
+      resp = await axios.get(
+        'http://siigoapi.azure-api.net/siigo/api/v1/Invoice/GetAll?numberPage=' +
+          p +
+          '&namespace=v1',
+        {
+          headers: {
+            'Ocp-Apim-Subscription-Key': SIIGO_SUSCRIPTION,
+            Authorization: access_token
+          }
+        }
+      )
+      if (resp.status === 200) {
+        resp.data.forEach(async data => {
+          const factura = new Factura({
+            IdSiigo: data.Id,
+            Number: data.Number,
+            ERPDocName: data.ERPDocName,
+            ERPDocDate: data.ERPDocDate,
+            Identification: data.Identification,
+            AccountName: data.AccountName,
+            TotalValue: data.TotalValue,
+            CountItems: data.CountItems
+          })
+          await factura.save().catch(e => {})
+        })
+      } else break
+    }
+    res.status(200).send(resp.data)
+  } catch (e) {
+    res.status(500).send({ res: error })
+  }
+}
+
+async function carteraCliente (req, res) {
+  res.setHeader('Content-Type', 'application/json')
+  const { documento } = req.params
+
+  const sumaFactura = await Factura.aggregate([
+    {
+      $group: {
+        _id: null,
+        totalValue: { $sum: '$TotalValue' },
+        enabledValue: {
+          $sum: {
+            $cond: [
+              // Condition to test
+              { Identification: documento },
+              // True
+              '$value',
+              // False
+              0
+            ]
+          }
+        }
+      }
+    }
+  ])
+
+  const sumaRecibos = await Recibo.aggregate([
+    {
+      $group: {
+        _id: null,
+        totalValue: { $sum: '$TotalValue' },
+        enabledValue: {
+          $sum: {
+            $cond: [
+              // Condition to test
+              { Identification: documento },
+              // True
+              '$value',
+              // False
+              0
+            ]
+          }
+        }
+      }
+    }
+  ])
+  const cartera = sumaFactura[0].totalValue - sumaRecibos[0].totalValue
+
+  res.status(200).send({ cartera })
+}
+
+function error (req, res) {
+  res.status(404).send({ error: 'Página no encontrada' })
 }
 
 module.exports = {
-  consultar,
-  error,
-};
+  consultarRecibosSiigo,
+  consultarFacturasSiigo,
+  carteraCliente,
+  error
+}
