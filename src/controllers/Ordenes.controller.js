@@ -1,5 +1,6 @@
 const axios = require('axios').default
 const Orden = require('../models/Orden.model')
+const Cliente = require('../models/Clientes.model')
 const { SIIGO_SUSCRIPTION, SIIGO_PARAMETROS } = require('../config/config')
 
 /**
@@ -7,6 +8,32 @@ const { SIIGO_SUSCRIPTION, SIIGO_PARAMETROS } = require('../config/config')
  */
 async function guardar (req, res) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
+  const {
+    DocDate,
+    Identification,
+    Items,
+    Latitude,
+    Longitude,
+    Total
+  } = req.body
+  console.log(req.body)
+
+  const { idUsuario } = req
+
+  const cliente = await Cliente.findOne({ Identification })
+  if (cliente) {
+    const orden = new Orden({
+      Items,
+      DocDate,
+      Identification,
+      FullName: cliente.FullName,
+      idUsuario,
+      Total
+    })
+    orden.save().catch(e => console.log(e))
+  } else {
+    req.status(201).send({ mensaje: 'El cliente no existe' })
+  }
 }
 
 /**

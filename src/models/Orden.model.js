@@ -19,7 +19,8 @@ const OrdenesSchema = new Schema({
   Estado: {
     type: String,
     default: 'Pendiente'
-  }
+  },
+  idUsuario: { type: String }
 })
 const Ordene = model('Ordenes', OrdenesSchema)
 

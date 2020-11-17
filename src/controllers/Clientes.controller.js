@@ -12,7 +12,7 @@ async function consultarSIIGO (req, res) {
   try {
     //se consulta el cliente
 
-    for (let p = 0; p <= 500; p++) {
+    for (let p = 0; p <= 1000; p++) {
       const resp = await axios.get(
         'http://siigoapi.azure-api.net/siigo/api/v1/Accounts/GetAll?numberPage=' +
           p +
@@ -41,12 +41,14 @@ async function consultarSIIGO (req, res) {
           })
           await cliente.save().catch(() => {})
         })
-      } else break
+      } else {
+        res.status(200).send({ mesaje: 'Correcto' })
+        break
+      }
     }
     res.status(200).send({ mesaje: 'Correcto' })
   } catch (error) {
-    //console.log(error)
-
+    console.log(e)
     res.status(500).send({ res: error })
   }
 }

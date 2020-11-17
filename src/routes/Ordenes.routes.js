@@ -6,5 +6,6 @@ const router = Router()
 router
   .get('/consultar', isAuth, OrdenesCtrl.consultar)
   .post('/actualizar', isAuth, token, OrdenesCtrl.actualizar)
+  .post('/guardar', isAuth, token, OrdenesCtrl.guardar)
   .get('/*', OrdenesCtrl.error)
 module.exports = router

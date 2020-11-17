@@ -8,10 +8,11 @@ const Factura = require('../models/Factura.model')
 async function consultarRecibosSiigo (req, res) {
   res.setHeader('Content-Type', 'application/json')
   const { access_token } = req.token
+  let resp
   try {
     //se consulta el Articulo
-    let resp
-    for (let p = 0; p <= 500; p++) {
+    resp
+    for (let p = 1; p <= 1500; p++) {
       resp = await axios.get(
         'http://siigoapi.azure-api.net/siigo/api/v1/Voucher/GetAll?numberPage=' +
           p +
@@ -23,6 +24,7 @@ async function consultarRecibosSiigo (req, res) {
           }
         }
       )
+
       if (resp.status === 200) {
         resp.data.forEach(async data => {
           const recibo = new Recibo({
@@ -41,7 +43,9 @@ async function consultarRecibosSiigo (req, res) {
     }
     res.status(200).send(resp.data)
   } catch (e) {
-    res.status(500).send({ res: error })
+    if (e.request.res.statusCode === 400) {
+      res.status(200).send(resp.data)
+    } else res.status(500).send({ res: e })
   }
 }
 
@@ -51,7 +55,7 @@ async function consultarFacturasSiigo (req, res) {
   try {
     //se consulta el Articulo
     let resp
-    for (let p = 0; p <= 500; p++) {
+    for (let p = 0; p <= 10000; p++) {
       resp = await axios.get(
         'http://siigoapi.azure-api.net/siigo/api/v1/Invoice/GetAll?numberPage=' +
           p +

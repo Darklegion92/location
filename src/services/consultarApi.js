@@ -12,7 +12,7 @@ const iniciarServicios = async () => {
   //se encarga de guardar los articulos localmente
   new CronJob(
     // "* * * * mon",
-    "* * * * mon",
+    "* * 1 * * mon",
     async function () {
       try {
         //se consulta el Articulo
