@@ -12,7 +12,7 @@ async function consultarSIIGO (req, res) {
   try {
     //se consulta el cliente
     let resp
-    for (let p = 0; p <= 500; p++) {
+    for (let p = 0; p <= 1500; p++) {
       resp = await axios.get(
         'http://siigoapi.azure-api.net/siigo/api/v1/Products/GetAll?numberPage=' +
           p +
