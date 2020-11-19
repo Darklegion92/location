@@ -13,14 +13,14 @@ module.exports = {
   PASS_FIREBIRD: process.env.PASS_FIREBIRD || 'masterkey',
   SIIGO_USERNAME:
     process.env.SIIGO_USERNAME ||
-    'GRUPOP28651@apionmicrosoft.com' ||
-    'EMPRESA2CAPACITACION\\empresa2@apionmicrosoft.com',
+    'EMPRESA2CAPACITACION\\empresa2@apionmicrosoft.com' ||
+    'GRUPOP28651@apionmicrosoft.com',
   SIIGO_PASSWORD:
-    process.env.SIIGO_USERNAME || '%vi12m8=dM' || 's112pempresa2#',
+    process.env.SIIGO_USERNAME || 's112pempresa2#' || '%vi12m8=dM',
   SIIGO_SUSCRIPTION:
     process.env.SIIGO_SUSCRIPTION ||
-    'b838c206d9674e9e95b009f74e92a0e3' ||
-    '1bacb007e08a41c8a17d728be643ae63',
+    '1bacb007e08a41c8a17d728be643ae63' ||
+    'b838c206d9674e9e95b009f74e92a0e3',
   SIIGO_CONEXION: {
     SIIGO_USERNAME: 'GRUPOP28651@apionmicrosoft.com',
     SIIGO_PASSWORD: '%vi12m8=dM',

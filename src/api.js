@@ -19,7 +19,7 @@ const CONFIG = require('./config/config')
 const APP = express()
 
 //procesos iniciales
-iniciarServicios()
+//iniciarServicios()
 
 //MiddelWare
 APP.use(cors())

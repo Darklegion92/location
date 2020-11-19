@@ -28,6 +28,8 @@ async function guardar (req, res) {
       Identification,
       FullName: cliente.FullName,
       idUsuario: idusuario,
+      Address: cliente.Address,
+      Phone: cliente.Phone,
       Total
     })
     const neworden = await orden.save().catch(e => console.log(e))
@@ -187,10 +189,13 @@ async function consultar (req, res) {
       ]
     })
   } else {
-    res.status(201).send({ mensaje: 'sin datos para la consulta' })
-    return
+    resp = await Orden.find();
   }
+
+  if(resp)
   res.status(200).send(resp)
+  else
+  res.status(200).send({mensaje:"Sin datos para la busqueda"})
 }
 
 /**
@@ -200,20 +205,21 @@ async function actualizar (req, res) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
   const { id, facturar, items, direccion, telefono } = req.body
   const { access_token } = req.token
-
-  const doc = await Orden.updateOne(
-    { _id: id },
-    { Items: items, Address: direccion, Phone: { Number: telefono } }
-  )
-  if (doc.nModified > 0 && !facturar)
-    res.status(200).send({ mensaje: 'guardado' })
-  else if (!facturar)
-    res.status(201).send({ mensaje: 'no se han hecho modificaciones' })
-
+  const orden = await Orden.findById(id)
+  if (orden.Estado === 'Pendiente') {
+    const doc = await Orden.updateOne(
+      { _id: id },
+      { Items: items, Address: direccion, Phone: { Number: telefono } }
+    )
+    if (doc.nModified > 0 && !facturar)
+      res.status(200).send({ mensaje: 'guardado' })
+    else if (!facturar)
+      res.status(201).send({ mensaje: 'No se han hecho modificaciones' })
+  } else {
+    res.status(201).send({ mensaje: 'Orden ya facturada' })
+  }
   //Procedemos a facturar en siigo
   if (facturar) {
-    const orden = await Orden.findById(id)
-
     if (orden.Estado === 'Pendiente') {
       let DocDate1 = new Date()
       //Facturamos
@@ -229,16 +235,16 @@ async function actualizar (req, res) {
         Items.push({
           ProductCode: item.Code,
           Description: item.Description,
-          GrossValue: item.Cantidad * item.Precio,
-          BaseValue: item.Cantidad * item.Precio,
+          GrossValue: item.Cantidad * item.PriceList1,
+          BaseValue: item.Cantidad * item.PriceList1,
           Quantity: item.Cantidad,
-          UnitValue: item.Precio,
+          UnitValue: item.PriceList1,
           TaxAddId: -1,
           TaxDiscountId: -1,
-          TotalValue: item.Cantidad * item.Precio,
+          TotalValue: item.Cantidad * item.PriceList1,
           TaxAdd2Id: -1
         })
-        Total = Total + item.Cantidad * item.Precio
+        Total = Total + item.Cantidad * item.PriceList1
       })
 
       try {
@@ -358,7 +364,6 @@ async function actualizar (req, res) {
             }
           }
         )
-        console.log(respuesta.header)
         const doc = await Orden.updateOne({ _id: id }, { Estado: 'Facturado' })
         if (doc.nModified > 0) {
           res.status(200).send({ mensaje: 'guardado' })
