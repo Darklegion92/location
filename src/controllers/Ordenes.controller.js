@@ -12,6 +12,7 @@ async function guardar (req, res) {
   const {
     DocDate,
     Identification,
+    DiasCredito,
     Items,
     Latitude,
     Longitude,
@@ -30,7 +31,8 @@ async function guardar (req, res) {
       idUsuario: idusuario,
       Address: cliente.Address,
       Phone: cliente.Phone,
-      Total
+      Total,
+      DiasCredito
     })
     const neworden = await orden.save().catch(e => console.log(e))
     if (neworden) {

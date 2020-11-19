@@ -1,33 +1,34 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose')
 
 const OrdenesSchema = new Schema({
   Items: {
-    type: Array,
+    type: Array
   },
   DocDate: {
-    type: Date,
+    type: Date
   },
   FullName: {
-    type: String,
+    type: String
   },
   Address: {
-    type: String,
+    type: String
   },
   Total: {
-    type: Number,
+    type: Number
   },
   Phone: {
-    type: Object,
+    type: Object
   },
   Identification: {
-    type: String,
+    type: String
   },
   Estado: {
     type: String,
-    default: "Pendiente",
+    default: 'Pendiente'
   },
   idUsuario: { type: String },
-});
-const Ordene = model("Ordenes", OrdenesSchema);
+  DiasCredito: { type: Number }
+})
+const Ordene = model('Ordenes', OrdenesSchema)
 
-module.exports = Ordene;
+module.exports = Ordene
