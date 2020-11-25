@@ -24,6 +24,14 @@ const locationSchema = new Schema({
   fecha: {
     type: Date,
     required: true
+  },
+  nombre: {
+    type: String,
+    required: true
+  },
+  direccion: {
+    type: String,
+    required: true
   }
 })
 const Location = model('Location', locationSchema)

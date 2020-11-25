@@ -36,7 +36,7 @@ APP.use(morgan('dev'))
 
 //Ruta
 APP.use('/usuario', usauriosRouter)
-APP.use('/location', locationRouter)
+APP.use('/localizacion', locationRouter)
 APP.use('/rutas', rutasRouter)
 APP.use('/clientes', clientesRouter)
 APP.use('/novedades', novedadesRouter)

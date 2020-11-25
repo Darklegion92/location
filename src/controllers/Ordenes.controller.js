@@ -38,6 +38,8 @@ async function guardar (req, res) {
     if (neworden) {
       const newLocation = Location({
         idUsuario: idusuario,
+        nombre: cliente.FullName,
+        direccion: cliente.Address,
         idVisita: neworden._id,
         tipo: 'Orden',
         latitude: Latitude,
@@ -191,13 +193,11 @@ async function consultar (req, res) {
       ]
     })
   } else {
-    resp = await Orden.find();
+    resp = await Orden.find()
   }
 
-  if(resp)
-  res.status(200).send(resp)
-  else
-  res.status(200).send({mensaje:"Sin datos para la busqueda"})
+  if (resp) res.status(200).send(resp)
+  else res.status(200).send({ mensaje: 'Sin datos para la busqueda' })
 }
 
 /**
