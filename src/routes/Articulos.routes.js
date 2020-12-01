@@ -4,7 +4,7 @@ const { token } = require('../middlewares/conexionSiigo')
 const { isAuth } = require('../middlewares/acceso')
 const router = Router()
 router
-  .get('/consultarsiigo', token, ArticulosCtrl.consultarSIIGO)
+  .get('/consultarsiigo',  ArticulosCtrl.consultarSIIGO)
   .get('/consultar/codigo/:codigo', isAuth, ArticulosCtrl.consultarDocumento)
   .get('/consultar/nombre/:nombre', isAuth, ArticulosCtrl.consultarNombre)
   .get('/consultar/:ult', isAuth, ArticulosCtrl.consultar)
