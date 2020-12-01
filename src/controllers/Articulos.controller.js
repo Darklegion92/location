@@ -40,7 +40,7 @@ async function consultarSIIGO (req, res) {
             Cost: data.Cost,
             IsInventoryControl: data.IsInventoryControl,
             State: data.State,
-            PriceList1: data.PriceList1,
+            PriceList1: data.PriceList4,
             PriceList2: data.PriceList2,
             PriceList3: data.PriceList3,
             PriceList4: data.PriceList4,

@@ -12,6 +12,7 @@ async function guardar(req, res) {
   const {
     DocDate,
     Identification,
+    DiasCredito,
     Items,
     Latitude,
     Longitude,
@@ -28,12 +29,23 @@ async function guardar(req, res) {
       Identification,
       FullName: cliente.FullName,
       idUsuario: idusuario,
+<<<<<<< HEAD
       Total,
     });
     const neworden = await orden.save().catch((e) => console.log(e));
+=======
+      Address: cliente.Address,
+      Phone: cliente.Phone,
+      Total,
+      DiasCredito
+    })
+    const neworden = await orden.save().catch(e => console.log(e))
+>>>>>>> 75dd721a593eca0ad9f34f3151ce18c30efeb89f
     if (neworden) {
       const newLocation = Location({
         idUsuario: idusuario,
+        nombre: cliente.FullName,
+        direccion: cliente.Address,
         idVisita: neworden._id,
         tipo: "Orden",
         latitude: Latitude,
@@ -187,16 +199,25 @@ async function consultar(req, res) {
       ],
     });
   } else {
+<<<<<<< HEAD
     res.status(201).send({ mensaje: "sin datos para la consulta" });
     return;
   }
   console.log(resp);
   res.status(200).send(resp);
+=======
+    resp = await Orden.find()
+  }
+
+  if (resp) res.status(200).send(resp)
+  else res.status(200).send({ mensaje: 'Sin datos para la busqueda' })
+>>>>>>> 75dd721a593eca0ad9f34f3151ce18c30efeb89f
 }
 
 /**
  * Actualiza la orden
  */
+<<<<<<< HEAD
 async function actualizar(req, res) {
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   const { id, facturar, items, direccion, telefono } = req.body;
@@ -217,6 +238,29 @@ async function actualizar(req, res) {
 
     if (orden.Estado === "Pendiente") {
       let DocDate1 = new Date();
+=======
+async function actualizar (req, res) {
+  res.setHeader('Content-Type', 'text/html; charset=utf-8')
+  const { id, facturar, items, direccion, telefono } = req.body
+  const { access_token } = req.token
+  const orden = await Orden.findById(id)
+  if (orden.Estado === 'Pendiente') {
+    const doc = await Orden.updateOne(
+      { _id: id },
+      { Items: items, Address: direccion, Phone: { Number: telefono } }
+    )
+    if (doc.nModified > 0 && !facturar)
+      res.status(200).send({ mensaje: 'guardado' })
+    else if (!facturar)
+      res.status(201).send({ mensaje: 'No se han hecho modificaciones' })
+  } else {
+    res.status(201).send({ mensaje: 'Orden ya facturada' })
+  }
+  //Procedemos a facturar en siigo
+  if (facturar) {
+    if (orden.Estado === 'Pendiente') {
+      let DocDate1 = new Date()
+>>>>>>> 75dd721a593eca0ad9f34f3151ce18c30efeb89f
       //Facturamos
       let Items = [];
       let Total = 0;
@@ -230,17 +274,25 @@ async function actualizar(req, res) {
         Items.push({
           ProductCode: item.Code,
           Description: item.Description,
-          GrossValue: item.Cantidad * item.Precio,
-          BaseValue: item.Cantidad * item.Precio,
+          GrossValue: item.Cantidad * item.PriceList1,
+          BaseValue: item.Cantidad * item.PriceList1,
           Quantity: item.Cantidad,
-          UnitValue: item.Precio,
+          UnitValue: item.PriceList1,
           TaxAddId: -1,
           TaxDiscountId: -1,
+<<<<<<< HEAD
           TotalValue: item.Cantidad * item.Precio,
           TaxAdd2Id: -1,
         });
         Total = Total + item.Cantidad * item.Precio;
       });
+=======
+          TotalValue: item.Cantidad * item.PriceList1,
+          TaxAdd2Id: -1
+        })
+        Total = Total + item.Cantidad * item.PriceList1
+      })
+>>>>>>> 75dd721a593eca0ad9f34f3151ce18c30efeb89f
 
       try {
         //consultar al api con base al documento.
@@ -358,9 +410,14 @@ async function actualizar(req, res) {
               Authorization: access_token,
             },
           }
+<<<<<<< HEAD
         );
         console.log(respuesta.header);
         const doc = await Orden.updateOne({ _id: id }, { Estado: "Facturado" });
+=======
+        )
+        const doc = await Orden.updateOne({ _id: id }, { Estado: 'Facturado' })
+>>>>>>> 75dd721a593eca0ad9f34f3151ce18c30efeb89f
         if (doc.nModified > 0) {
           res.status(200).send({ mensaje: "guardado" });
         }
