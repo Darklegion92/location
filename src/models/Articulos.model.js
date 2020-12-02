@@ -1,116 +1,111 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model } = require("mongoose");
 
 const ArticulosSchema = new Schema({
   Id: {
     type: Number,
-    unique: true
+    unique: true,
   },
   Code: {
     type: String,
-    lowercase: true
   },
   Description: {
     type: String,
-    lowercase: true
   },
   ReferenceManufactures: {
     type: String,
-    lowercase: true
   },
   ProductTypeKey: {
     type: String,
-    lowercase: true
   },
   CodeBars: {
     type: String,
-    lowercase: true
   },
   TaxAddID: {
-    type: Number
+    type: Number,
   },
   TaxDiscID: {
-    type: Number
+    type: Number,
   },
   IsIncluded: { type: Boolean },
   Cost: {
-    type: Number
+    type: Number,
   },
   IsInventoryControl: { type: Boolean },
   State: {
-    type: Number
+    type: Number,
   },
   PriceList1: {
-    type: Number
+    type: Number,
   },
   PriceList2: {
-    type: Number
+    type: Number,
   },
   PriceList3: {
-    type: Number
+    type: Number,
   },
   PriceList4: {
-    type: Number
+    type: Number,
   },
   PriceList5: {
-    type: Number
+    type: Number,
   },
   PriceList6: {
-    type: Number
+    type: Number,
   },
   PriceList7: {
-    type: Number
+    type: Number,
   },
   PriceList8: {
-    type: Number
+    type: Number,
   },
   PriceList9: {
-    type: Number
+    type: Number,
   },
   PriceList10: {
-    type: Number
+    type: Number,
   },
   PriceList11: {
-    type: Number
+    type: Number,
   },
   PriceList12: {
-    type: Number
+    type: Number,
   },
   Image: {
     type: String,
-    lowercase: true
+    lowercase: true,
   },
   AccountGroupID: {
-    type: Number
+    type: Number,
   },
   SubType: {
-    type: Number
+    type: Number,
   },
   TaxAdd2ID: {
-    type: Number
+    type: Number,
   },
   TaxImpoValue: {
-    type: Number
+    type: Number,
   },
   Model: {
     type: String,
-    lowercase: true
+    lowercase: true,
   },
   Tariff: {
     type: String,
-    lowercase: true
+    lowercase: true,
   },
   Brand: {
     type: String,
-    lowercase: true
+    lowercase: true,
   },
   MeasurementUnitCode: {
     type: String,
-    lowercase: true
+    lowercase: true,
   },
   Balance: {
-    type: Number
-  }
-})
-const Articulo = model('Articulos', ArticulosSchema)
+    type: Number,
+  },
+});
+const Articulo = model("Articulos", ArticulosSchema);
 
-module.exports = Articulo
+module.exports = Articulo;
