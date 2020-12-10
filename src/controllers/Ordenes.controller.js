@@ -32,9 +32,9 @@ async function guardar(req, res) {
       Address: cliente.Address,
       Phone: cliente.Phone,
       Total,
-      DiasCredito
-    })
-    const neworden = await orden.save().catch(e => console.log(e))
+      DiasCredito,
+    });
+    const neworden = await orden.save().catch((e) => console.log(e));
     if (neworden) {
       const newLocation = Location({
         idUsuario: idusuario,
@@ -193,37 +193,37 @@ async function consultar(req, res) {
       ],
     });
   } else {
-    resp = await Orden.find()
+    resp = await Orden.find();
   }
 
-  if (resp) res.status(200).send(resp)
-  else res.status(200).send({ mensaje: 'Sin datos para la busqueda' })
+  if (resp) res.status(200).send(resp);
+  else res.status(200).send({ mensaje: "Sin datos para la busqueda" });
 }
 
 /**
  * Actualiza la orden
  */
-async function actualizar (req, res) {
-  res.setHeader('Content-Type', 'text/html; charset=utf-8')
-  const { id, facturar, items, direccion, telefono } = req.body
-  const { access_token } = req.token
-  const orden = await Orden.findById(id)
-  if (orden.Estado === 'Pendiente') {
+async function actualizar(req, res) {
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  const { id, facturar, items, direccion, telefono } = req.body;
+  const { access_token } = req.token;
+  const orden = await Orden.findById(id);
+  if (orden.Estado === "Pendiente") {
     const doc = await Orden.updateOne(
       { _id: id },
       { Items: items, Address: direccion, Phone: { Number: telefono } }
-    )
+    );
     if (doc.nModified > 0 && !facturar)
-      res.status(200).send({ mensaje: 'guardado' })
+      res.status(200).send({ mensaje: "guardado" });
     else if (!facturar)
-      res.status(201).send({ mensaje: 'No se han hecho modificaciones' })
+      res.status(201).send({ mensaje: "No se han hecho modificaciones" });
   } else {
-    res.status(201).send({ mensaje: 'Orden ya facturada' })
+    res.status(201).send({ mensaje: "Orden ya facturada" });
   }
   //Procedemos a facturar en siigo
   if (facturar) {
-    if (orden.Estado === 'Pendiente') {
-      let DocDate1 = new Date()
+    if (orden.Estado === "Pendiente") {
+      let DocDate1 = new Date();
       //Facturamos
       let Items = [];
       let Total = 0;
@@ -244,10 +244,11 @@ async function actualizar (req, res) {
           TaxAddId: -1,
           TaxDiscountId: -1,
           TotalValue: item.Cantidad * item.PriceList1,
-          TaxAdd2Id: -1
-        })
-        Total = Total + item.Cantidad * item.PriceList1
-      })
+          TaxAdd2Id: -1,
+          WareHouseCode: item.Bodega,
+        });
+        Total = Total + item.Cantidad * item.PriceList1;
+      });
 
       try {
         //consultar al api con base al documento.
@@ -365,8 +366,8 @@ async function actualizar (req, res) {
               Authorization: access_token,
             },
           }
-        )
-        const doc = await Orden.updateOne({ _id: id }, { Estado: 'Facturado' })
+        );
+        const doc = await Orden.updateOne({ _id: id }, { Estado: "Facturado" });
         if (doc.nModified > 0) {
           res.status(200).send({ mensaje: "guardado" });
         }
