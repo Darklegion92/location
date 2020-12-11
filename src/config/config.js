@@ -12,10 +12,10 @@ module.exports = {
   USER_FIREBIRD: process.env.USER_FIREBIRD || "sysdba",
   PASS_FIREBIRD: process.env.PASS_FIREBIRD || "masterkey",
   SIIGO_USERNAME:
-    process.env.SIIGO_USERNAME || "EMPRESA2CAPACITACION\empresa2@apionmicrosoft.com",
-  SIIGO_PASSWORD: process.env.SIIGO_USERNAME || "%vi12m8=dM",
+    process.env.SIIGO_USERNAME || "EMPRESA2CAPACITACION\\empresa2@apionmicrosoft.com",
+  SIIGO_PASSWORD: process.env.SIIGO_USERNAME || "s112pempresa2#",
   SIIGO_SUSCRIPTION:
-    process.env.SIIGO_SUSCRIPTION || "1bacb007e08a41c8a17d728be643ae63",
+    process.env.SIIGO_SUSCRIPTION || "184165d1878e45f2910bc99e870ac781",
   SIIGO_CONEXION: {
     SIIGO_USERNAME: "GRUPOP28651@apionmicrosoft.com",
     SIIGO_PASSWORD: "s112pempresa2#",
