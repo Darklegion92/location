@@ -1,7 +1,9 @@
-const { Router } = require('express')
-const LocationCtrl = require('../controllers/Location.controller')
+const { Router } = require("express");
+const LocationCtrl = require("../controllers/Location.controller");
+const { isAuth } = require("../middlewares/acceso");
+const router = Router();
+router
+  .get("/", isAuth, LocationCtrl.obtenerLocation)
+  .get("/*", LocationCtrl.error);
 
-const router = Router()
-router.get('/', LocationCtrl.obtenerLocation).get('/*', LocationCtrl.error)
-
-module.exports = router
+module.exports = router;

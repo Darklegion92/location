@@ -245,7 +245,7 @@ async function actualizar(req, res) {
           TaxDiscountId: -1,
           TotalValue: item.Cantidad * item.PriceList1,
           TaxAdd2Id: -1,
-          WareHouseCode: item.Bodega,
+          // WareHouseCode: item.Bodega,
         });
         Total = Total + item.Cantidad * item.PriceList1;
       });
@@ -263,7 +263,6 @@ async function actualizar(req, res) {
             },
           }
         );
-
         const cliente = datosCliente.data;
         const IsSocialReason = cliente.IsSocialReason;
         const Address = direccion;
@@ -326,15 +325,8 @@ async function actualizar(req, res) {
 
                 Phone: Phone,
               },
-
               Contact: {
-                Code: CodeContact,
-
                 Phone1: Phone,
-
-                Mobile: {
-                  Number: 0,
-                },
 
                 EMail: EMail === "" ? "correo@falso.com" : EMail,
 

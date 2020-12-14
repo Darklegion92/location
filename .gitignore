@@ -11,9 +11,9 @@
 # production
 /build
 
-
 #server
 /public/img/articulos
+/src/config/config.js
 # misc
 .DS_Store
 .env.local
