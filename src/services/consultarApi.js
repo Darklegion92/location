@@ -14,7 +14,7 @@ const iniciarServicios = async () => {
   //se encarga de guardar los articulos localmente
   new CronJob(
     // "* * * * mon",
-    '* 23 * * *',
+    '* 12 * * *',
     async function () {
       console.log('se inicia actualizacion diaria de articulos')
       try {
