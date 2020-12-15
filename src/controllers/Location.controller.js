@@ -40,9 +40,15 @@ async function obtenerLocation(req, res) {
     const fechaFinal = Moment(new Date(fechas[1].split("T")[0])).add(1, "days");
 
     locations = await Location.find({
-      idUsuario: usuario,
-      fecha: { $gte: fechaInicial },
-      fecha: { $lt: fechaFinal },
+      $and: [
+        {
+          idUsuario: usuario,
+          fecha: {
+            $gte: fechaInicial,
+            $lt: new Date(fechaFinal.toISOString()),
+          },
+        },
+      ],
     }).sort({
       fecha: "desc",
     });
