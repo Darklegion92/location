@@ -36,12 +36,16 @@ async function obtenerLocation(req, res) {
   var locations;
   try {
     const { usuario, fechas } = req.query;
-    const fechaInicial = new Date(fechas[0].split("T")[0]);
-    const fechaFinal = Moment(new Date(fechas[1].split("T")[0])).add(1, "days");
+    const fechaInicial = Moment(new Date(fechas[0].split("T")[0])).format(
+      "YYYY-MM-DD"
+    );
+    const fechaFinal = Moment(new Date(fechas[1].split("T")[0]))
+      .add(1, "days")
+      .format("YYYY-MM-DD");
 
     locations = await Location.find({
       fecha: {
-        $gte: fechaInicial,
+        $gte: new Date(fechaInicial.toISOString()),
         $lt: new Date(fechaFinal.toISOString()),
       },
     });
