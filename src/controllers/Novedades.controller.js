@@ -65,7 +65,7 @@ async function guardar (req, res) {
         }
       }
     } else {
-      req.status(201).send({ mensaje: 'El cliente no existe' })
+      res.status(201).send({ mensaje: 'El cliente no existe' })
     }
   } catch (err) {
     console.log(err)

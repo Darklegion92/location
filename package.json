@@ -20,7 +20,7 @@
     "express-session": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-simple": "^0.5.6",
-    "moment": "^2.24.0",
+    "moment": "^2.29.1",
     "mongoose": "^5.8.9",
     "morgan": "^1.9.1",
     "node-cron": "^2.0.3",
