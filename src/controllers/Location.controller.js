@@ -44,10 +44,15 @@ async function obtenerLocation(req, res) {
       .format("YYYY-MM-DD");
     console.log(fechaFinal);
     locations = await Location.find({
-      fecha: {
-        $gte: new Date(fechaInicial),
-        $lt: new Date(fechaFinal),
-      },
+      $and: [
+        { idUsuario: usuario },
+        {
+          fecha: {
+            $gte: new Date(fechaInicial),
+            $lt: new Date(fechaFinal),
+          },
+        },
+      ],
     });
 
     if (locations.length > 0) {
