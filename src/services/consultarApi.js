@@ -14,7 +14,7 @@ const iniciarServicios = async () => {
   //se encarga de guardar los articulos localmente
   new CronJob(
     // "* * * * mon",
-    '15 * * * *',
+    '* 23 * * *',
     async function () {
       console.log('se inicia actualizacion diaria de articulos')
       try {
@@ -56,7 +56,7 @@ const iniciarServicios = async () => {
   )
 
  new CronJob(
-    '15 * * * *',
+    '* 23 * * *',
     async function () {
       console.log('se inicia actualizacion diaria de bodegas')
       try {
@@ -98,7 +98,7 @@ const iniciarServicios = async () => {
   )
 
   new CronJob(
-    '15 * * * *',
+    '* 23 * * *',
     async function () {
       console.log('se inicia actualizacion diaria de clientes')
       await Cliente.deleteMany({}, e => {
