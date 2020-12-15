@@ -1,8 +1,8 @@
-const Location = require('../models/Location.model')
+const Location = require("../models/Location.model");
 
-const Moment = require('moment')
-async function id (req, res) {
-  res.setHeader('Content-Type', 'application/json')
+const Moment = require("moment");
+async function id(req, res) {
+  res.setHeader("Content-Type", "application/json");
   /*var con = conexionMYSQL.con;
   const sql = "SELECT idCliente FROM clientes WHERE idFacebook = ?";
   const parametros = [req.params.id];
@@ -15,60 +15,58 @@ async function id (req, res) {
     con.release();
   } catch (e) {}*/
 }
-async function grabarLocation (req, res) {
-  res.setHeader('Content-Type', 'application/json')
-  const { idUsuario, latitude, longitude, fecha } = req.body
+async function grabarLocation(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  const { idUsuario, latitude, longitude, fecha } = req.body;
   const nuevaLocation = new Location({
     idUsuario,
     latitude,
     longitude,
-    fecha
-  })
+    fecha,
+  });
   try {
-    await nuevaLocation.save()
-    res.status(200).send({ res: 'Guardado Correctamente' })
+    await nuevaLocation.save();
+    res.status(200).send({ res: "Guardado Correctamente" });
   } catch (err) {
-    res.status(400).send({ err })
+    res.status(400).send({ err });
   }
 }
-async function obtenerLocation (req, res) {
-  res.setHeader('Content-Type', 'application/json')
-  var locations
+async function obtenerLocation(req, res) {
+  res.setHeader("Content-Type", "application/json");
+  var locations;
   try {
-    const { usuario, fechas } = req.query
-    const fechaInicial = new Date(fechas[0].split('T')[0])
-    const fechaFinal = Moment(new Date(fechas[1].split('T')[0])).add(1, 'days')
+    const { usuario, fechas } = req.query;
+    const fechaInicial = new Date(fechas[0].split("T")[0]);
+    const fechaFinal = Moment(new Date(fechas[1].split("T")[0])).add(1, "days");
 
     locations = await Location.find({
-      $and: [
-        { idUsuario: usuario },
-        { fecha: { $gte: fechaInicial } },
-        { fecha: { $lt: fechaFinal } }
-      ]
+      idUsuario: usuario,
+      fecha: { $gte: fechaInicial },
+      fecha: { $lt: fechaFinal },
     }).sort({
-      fecha: 'desc'
-    })
+      fecha: "desc",
+    });
 
     if (locations.length > 0) {
-      res.status(200).send(locations)
+      res.status(200).send(locations);
     } else {
       res
         .status(201)
-        .send({ res: 'No Se Encontraron Coincidencias', status: 201 })
+        .send({ res: "No Se Encontraron Coincidencias", status: 201 });
     }
   } catch (err) {
-    console.log(err)
-    res.status(500).send({ err })
+    console.log(err);
+    res.status(500).send({ err });
   }
 }
 
-function error (req, res) {
-  res.status(404).send({ error: 'Página no encontrada' })
+function error(req, res) {
+  res.status(404).send({ error: "Página no encontrada" });
 }
 
 module.exports = {
   id,
   grabarLocation,
   obtenerLocation,
-  error
-}
+  error,
+};
