@@ -44,8 +44,6 @@ async function obtenerLocation(req, res) {
         $gte: fechaInicial,
         $lt: new Date(fechaFinal.toISOString()),
       },
-    }).sort({
-      fecha: "desc",
     });
 
     if (locations.length > 0) {
