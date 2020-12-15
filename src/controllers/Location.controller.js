@@ -42,11 +42,11 @@ async function obtenerLocation(req, res) {
     const fechaFinal = Moment(new Date(fechas[1].split("T")[0]))
       .add(1, "days")
       .format("YYYY-MM-DD");
-
+    console.log(fechaFinal);
     locations = await Location.find({
       fecha: {
-        $gte: new Date(fechaInicial.toISOString()),
-        $lt: new Date(fechaFinal.toISOString()),
+        $gte: new Date(fechaInicial),
+        $lt: new Date(fechaFinal),
       },
     });
 
