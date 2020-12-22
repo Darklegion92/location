@@ -7,6 +7,7 @@ const { ACCESS_TOKEN } = require('./generarTokenSIIGO')
 const Articulo = require('../models/Articulos.model')
 const Bodega = require('../models/Bodegas.model')
 const Cliente = require('../models/Clientes.model')
+const Tax = require('../models/Tax.model')
 
 const iniciarServicios = async () => {
   const access_token = await ACCESS_TOKEN()
@@ -14,7 +15,7 @@ const iniciarServicios = async () => {
   //se encarga de guardar los articulos localmente
   new CronJob(
     // "* * * * mon",
-    '* 12 * * *',
+    '* 23 * * *',
     async function () {
       console.log('se inicia actualizacion diaria de articulos')
       try {
@@ -55,7 +56,7 @@ const iniciarServicios = async () => {
     true
   )
 
- new CronJob(
+  new CronJob(
     '* 23 * * *',
     async function () {
       console.log('se inicia actualizacion diaria de bodegas')
@@ -136,6 +137,48 @@ const iniciarServicios = async () => {
         } else {
           break
         }
+      }
+    },
+    function () {
+      console.log('Bodegas actualizados correctamente')
+    },
+    true
+  )
+
+  new CronJob(
+    '* 23 * * *',
+    async function () {
+      console.log('se inicia actualizacion diaria de Tarifas')
+      try {
+        //se consulta el Articulo
+        await Tax.deleteMany({}, e => {
+          console.log('Tarifas Eliminados')
+        })
+        for (let p = 0; p <= 1500; p++) {
+          const resp = await axios.get(
+            'http://siigoapi.azure-api.net/siigo/api/v1/Taxes/GetAll?numberPage=' +
+              p +
+              '&namespace=v1',
+            {
+              headers: {
+                'Ocp-Apim-Subscription-Key': SIIGO_SUSCRIPTION,
+                Authorization: access_token
+              }
+            }
+          )
+          if (resp.status === 200) {
+            const tarifas = resp.data
+
+            tarifas.forEach(async (tarifa, i) => {
+              const newTax = new Tax(tarifa)
+
+              newTax.save()
+            })
+          } else break
+        }
+        console.log('Bodegas actualizados correctamente')
+      } catch (error) {
+        console.log(error)
       }
     },
     function () {

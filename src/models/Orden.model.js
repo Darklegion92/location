@@ -29,6 +29,6 @@ const OrdenesSchema = new Schema({
   idUsuario: { type: String },
   DiasCredito: { type: Number }
 })
-const Ordene = model('Ordenes', OrdenesSchema)
+const Ordenes = model('Ordenes', OrdenesSchema)
 
-module.exports = Ordene
+module.exports = Ordenes
