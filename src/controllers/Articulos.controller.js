@@ -12,22 +12,22 @@ async function consultarSIIGO (req, res) {
   try {
     //se consulta el cliente
     let resp
-    //for (let p = 0; p <= 1500; p++) {
-    resp = await axios.get(
-      'http://siigoapi.azure-api.net/siigo/api/v1/Users/GetAll?numberPage=' +
-        5 +
-        '&namespace=v1',
-      {
-        headers: {
-          'Ocp-Apim-Subscription-Key': SIIGO_SUSCRIPTION,
-          Authorization: access_token
+    for (let p = 0; p <= 1500; p++) {
+      resp = await axios.get(
+        'http://siigoapi.azure-api.net/siigo/api/v1/Users/GetAll?numberPage=' +
+          5 +
+          '&namespace=v1',
+        {
+          headers: {
+            'Ocp-Apim-Subscription-Key': SIIGO_SUSCRIPTION,
+            Authorization: access_token
+          }
         }
-      }
-    )
+      )
 
-    if (resp.status === 200) {
-      resp.data
-      /* resp.data.forEach(async (data) => {
+      if (resp.status === 200) {
+        resp.data
+        resp.data.forEach(async data => {
           var articulo = new Articulo({
             Id: data.Id,
             Code: data.Code,
@@ -62,12 +62,12 @@ async function consultarSIIGO (req, res) {
             Tariff: data.Tariff,
             Brand: data.Brand,
             MeasurementUnitCode: data.MeasurementUnitCode,
-            Balance: data.Balance,
-          });
-          await articulo.save().catch(() => {});
-        });*/
-    } // else break;
-    //}
+            Balance: data.Balance
+          })
+          await articulo.save().catch(() => {})
+        })
+      } else break
+    }
     res.status(200).send(resp.data)
   } catch (error) {
     //console.log(error)
