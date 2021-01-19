@@ -24,47 +24,47 @@ async function guardar (req, res) {
     Longitude,
     Total
   } = req.body
-try{
-  const { idusuario } = req
+  try {
+    const { idusuario } = req
 
-  const usuario = await Usuario.findOne({_id:idusuario})
+    const usuario = await Usuario.findOne({ _id: idusuario })
 
-  const cliente = await Cliente.findOne({ Identification })
-  if (cliente) {
-    const orden = new Orden({
-      Items,
-      DocDate,
-      Identification,
-      FullName: cliente.FullName,
-      Usuario: usuario,
-      Address: cliente.Address,
-      Phone: cliente.Phone,
-      Total,
-      DiasCredito
-    })
-    const neworden = await orden.save().catch(e => console.log(e))
-    if (neworden) {
-      const newLocation = Location({
-        idUsuario: idusuario,
-        nombre: cliente.FullName,
-        direccion: cliente.Address,
-        idVisita: neworden._id,
-        tipo: 'Orden',
-        latitude: Latitude,
-        longitude: Longitude,
-        fecha: DocDate
+    const cliente = await Cliente.findOne({ Identification })
+    if (cliente) {
+      const orden = new Orden({
+        Items,
+        DocDate,
+        Identification,
+        FullName: cliente.FullName,
+        Usuario: usuario,
+        Address: cliente.Address,
+        Phone: cliente.Phone,
+        Total,
+        DiasCredito
       })
-      const resplocation = await newLocation.save()
-      if (resplocation) {
-        res.status(200).send(neworden)
+      const neworden = await orden.save().catch(e => console.log(e))
+      if (neworden) {
+        const newLocation = Location({
+          idUsuario: idusuario,
+          nombre: cliente.FullName,
+          direccion: cliente.Address,
+          idVisita: neworden._id,
+          tipo: 'Orden',
+          latitude: Latitude,
+          longitude: Longitude,
+          fecha: DocDate
+        })
+        const resplocation = await newLocation.save()
+        if (resplocation) {
+          res.status(200).send(neworden)
+        }
       }
+    } else {
+      req.status(201).send({ mensaje: 'El cliente no existe' })
     }
-  } else {
-    req.status(201).send({ mensaje: 'El cliente no existe' })
+  } catch (e) {
+    console.log(e)
   }
-}catch(e){
-console.log(e);
-}
 }
 
 /**
@@ -252,7 +252,7 @@ async function actualizar (req, res) {
         let TaxAddId = articulo[0].TaxAddID
         const tax = await Tax.findOne({ Id: articulo[0].TaxAddID })
         let TaxAddPercentage = tax.Percentage
-
+        console.log(item.PriceList1)
         Items.push({
           ProductCode: item.Code,
           Description: item.Description,
@@ -293,9 +293,6 @@ async function actualizar (req, res) {
         const FirstName = cliente.FirstName
         const LastName = cliente.LastName
         const CodeContact = cliente.PrincipalContactID
-
-          console.log(Total);
-          console.log(Iva);
 
         const respuesta = await axios.post(
           'http://siigoapi.azure-api.net/siigo/api/v1/Invoice/Save?namespace=namespace=v1',
