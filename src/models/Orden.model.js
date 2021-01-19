@@ -26,7 +26,7 @@ const OrdenesSchema = new Schema({
     type: String,
     default: 'Pendiente'
   },
-  idUsuario: { type: String },
+  Usuario: { type: Object },
   DiasCredito: { type: Number }
 })
 const Ordenes = model('Ordenes', OrdenesSchema)

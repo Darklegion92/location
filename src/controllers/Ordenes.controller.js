@@ -5,6 +5,7 @@ const Cliente = require('../models/Clientes.model')
 const Bodega = require('../models/Bodegas.model')
 const Location = require('../models/Location.model')
 const Articulo = require('../models/Articulos.model')
+const Usuario = require('../models/Usuarios.model')
 const Tax = require('../models/Tax.model')
 const Moment = require('moment')
 const { SIIGO_SUSCRIPTION, SIIGO_PARAMETROS } = require('../config/config')
@@ -23,8 +24,10 @@ async function guardar (req, res) {
     Longitude,
     Total
   } = req.body
-
+try{
   const { idusuario } = req
+
+  const usuario = await Usuario.findOne({_id:idusuario})
 
   const cliente = await Cliente.findOne({ Identification })
   if (cliente) {
@@ -33,7 +36,7 @@ async function guardar (req, res) {
       DocDate,
       Identification,
       FullName: cliente.FullName,
-      idUsuario: idusuario,
+      Usuario: usuario,
       Address: cliente.Address,
       Phone: cliente.Phone,
       Total,
@@ -59,6 +62,9 @@ async function guardar (req, res) {
   } else {
     req.status(201).send({ mensaje: 'El cliente no existe' })
   }
+}catch(e){
+console.log(e);
+}
 }
 
 /**
@@ -74,18 +80,11 @@ async function consultar (req, res) {
     fechaI = new Date(
       Moment(fechas[0].replace('"', '').replace('"', '')).format('YYYY-MM-DD')
     )
-
-    /* new Date(
-      Date.parse(fechas[0].replace('"', '').replace('"', ''))
-    ).setHours(0, 0, 0, 0)*/
     fechaF = new Date(
       Moment(fechas[1].replace('"', '').replace('"', ''))
         .add(1, 'days')
         .format('YYYY-MM-DD')
     )
-
-    console.log(fechaI)
-    console.log(fechaF)
   }
 
   if (buscar && estado && fechas) {
