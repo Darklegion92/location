@@ -317,6 +317,8 @@ async function actualizar (req, res) {
               Account: {
                 IsSocialReason: IsSocialReason,
                 FullName: FullName,
+                FirstName:FirtsName,
+                LAstNAme:LastName,
                 IdTypeCode: SIIGO_PARAMETROS.IdTypeCode,
                 Identification: orden.Identification,
                 BranchOffice: 0,
