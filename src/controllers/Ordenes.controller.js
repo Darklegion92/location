@@ -252,7 +252,7 @@ async function actualizar (req, res) {
         let TaxAddId = articulo[0].TaxAddID
         const tax = await Tax.findOne({ Id: articulo[0].TaxAddID })
      
-        let TaxAddPercentage = tax.Percentage 
+        let TaxAddPercentage = tax ? tax.Percentage : 0
         
         Items.push({
           ProductCode: item.Code,
