@@ -14,13 +14,10 @@ const facturasRouter = require("./routes/Facturas.routes");
 const carterasRouter = require("./routes/Carteras.routes");
 const ordenesRouter = require("./routes/Ordenes.routes");
 const bodegasRouter = require("./routes/Bodegas.routes");
-const { iniciarServicios } = require("./services/consultarApi");
+const taxesRouter = require("./routes/Taxes.routes");
 const CONFIG = require("./config/config");
 
 const APP = express();
-
-//procesos iniciales
-iniciarServicios();
 
 //MiddelWare
 APP.use(cors());
@@ -47,6 +44,7 @@ APP.use("/facturas", facturasRouter);
 APP.use("/carteras", carterasRouter);
 APP.use("/ordenes", ordenesRouter);
 APP.use("/bodegas", bodegasRouter);
+APP.use("/taxes", taxesRouter);
 
 //Elementos Estaticos
 APP.use(express.static("public"));

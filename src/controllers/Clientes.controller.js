@@ -11,21 +11,24 @@ async function consultarSIIGO(req, res) {
   const { access_token } = req.token;
   try {
     //se consulta el cliente
-
+    await Cliente.deleteMany({}, e => {
+      console.log('Clientes Eliminados')
+    })
+   // res.status(200).send({ mensaje: "Actualizado Correctamente" });
     for (let p = 0; p <= 1000; p++) {
       const resp = await axios.get(
-        "http://siigoapi.azure-api.net/siigo/api/v1/Accounts/GetAll?numberPage=" +
+        'http://siigoapi.azure-api.net/siigo/api/v1/Accounts/GetAll?numberPage=' +
           p +
-          "&namespace=v1",
+          '&namespace=v1',
         {
           headers: {
-            "Ocp-Apim-Subscription-Key": SIIGO_SUSCRIPTION,
-            Authorization: access_token,
-          },
+            'Ocp-Apim-Subscription-Key': SIIGO_SUSCRIPTION,
+            Authorization: access_token
+          }
         }
-      );
-      if (resp.status === 200) {
-        resp.data.forEach(async (data) => {
+      )
+      if (resp.status === 200 && resp.data.length>0) {
+        resp.data.forEach(async data => {
           var cliente = new Cliente({
             IdSiigo: data.Id,
             IsSocialReason: data.IsSocialReason,
@@ -37,18 +40,18 @@ async function consultarSIIGO(req, res) {
             Phone: data.Phone,
             Phone1: data.Phone,
             EMail: data.EMail,
-            CodeContact: data.PrincipalContactID,
-          });
-          await cliente.save().catch(() => {});
-        });
+            CodeContact: data.PrincipalContactID
+          })
+          await cliente.save().catch(() => {})
+        })
       } else {
-        res.status(200).send({ mesaje: "Correcto" });
         break;
       }
     }
-    res.status(200).send({ mesaje: "Correcto" });
+    res.status(200).send({ mensaje: "Actualizado Correctamente" });
+
   } catch (error) {
-    console.log(e);
+    console.log(error);
     res.status(500).send({ res: error });
   }
 }

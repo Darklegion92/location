@@ -5,5 +5,6 @@ const { isAuth } = require("../middlewares/acceso");
 const router = Router();
 router
   .get("/consultar", isAuth, BodegasCtrl.consultar)
+  .get("/consultarsiigo", isAuth, token,BodegasCtrl.consultarsiigo)
   .get("/*", BodegasCtrl.error);
 module.exports = router;

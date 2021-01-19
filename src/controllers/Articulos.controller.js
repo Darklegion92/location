@@ -10,12 +10,15 @@ async function consultarSIIGO (req, res) {
   res.setHeader('Content-Type', 'application/json')
   const { access_token } = req.token
   try {
-    //se consulta el cliente
+    await Articulo.deleteMany({}, e => {
+      console.log('Articulos Eliminados')
+    })
+   res.status(200).send({ mesaje: 'actualizado correctamente' })
     let resp
     for (let p = 0; p <= 1500; p++) {
       resp = await axios.get(
-        'http://siigoapi.azure-api.net/siigo/api/v1/Users/GetAll?numberPage=' +
-          5 +
+        'http://siigoapi.azure-api.net/siigo/api/v1/Products/GetAll?numberPage=' +
+          p +
           '&namespace=v1',
         {
           headers: {
@@ -24,54 +27,17 @@ async function consultarSIIGO (req, res) {
           }
         }
       )
-
-      if (resp.status === 200) {
-        resp.data
-        resp.data.forEach(async data => {
-          var articulo = new Articulo({
-            Id: data.Id,
-            Code: data.Code,
-            Description: data.Description,
-            ReferenceManufactures: data.ReferenceManufactures,
-            ProductTypeKey: data.ProductTypeKey,
-            CodeBars: data.CodeBars,
-            TaxAddID: data.TaxAddID,
-            TaxDiscID: data.TaxDiscID,
-            IsIncluded: data.IsIncluded,
-            Cost: data.Cost,
-            IsInventoryControl: data.IsInventoryControl,
-            State: data.State,
-            PriceList1: data.PriceList4,
-            PriceList2: data.PriceList2,
-            PriceList3: data.PriceList3,
-            PriceList4: data.PriceList4,
-            PriceList5: data.PriceList5,
-            PriceList6: data.PriceList6,
-            PriceList7: data.PriceList7,
-            PriceList8: data.PriceList8,
-            PriceList9: data.PriceList9,
-            PriceList10: data.PriceList10,
-            PriceList11: data.PriceList11,
-            PriceList12: data.PriceList12,
-            Image: data.Image,
-            AccountGroupID: data.AccountGroupID,
-            SubType: data.SubType,
-            TaxAdd2ID: data.TaxAdd2ID,
-            TaxImpoValue: data.TaxImpoValue,
-            Model: data.Model,
-            Tariff: data.Tariff,
-            Brand: data.Brand,
-            MeasurementUnitCode: data.MeasurementUnitCode,
-            Balance: data.Balance
-          })
-          await articulo.save().catch(() => {})
+      if (resp.status === 200 && resp.data.length>0) {
+        const articulos = resp.data
+        articulos.forEach(async (articulo, i) => {
+          const nuevoArticulo = new Articulo(articulo)
+          await nuevoArticulo.save()
         })
       } else break
     }
-    res.status(200).send(resp.data)
+   // res.status(200).send({ mesaje: 'actualizado correctamente' })
   } catch (error) {
-    //console.log(error)
-
+   // console.log(error)
     res.status(500).send({ res: error })
   }
 }
