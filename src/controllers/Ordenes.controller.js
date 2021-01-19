@@ -293,6 +293,10 @@ async function actualizar (req, res) {
         const FirstName = cliente.FirstName
         const LastName = cliente.LastName
         const CodeContact = cliente.PrincipalContactID
+
+          console.log(Total);
+          console.log(Iva);
+
         const respuesta = await axios.post(
           'http://siigoapi.azure-api.net/siigo/api/v1/Invoice/Save?namespace=namespace=v1',
 
