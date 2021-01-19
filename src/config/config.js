@@ -28,7 +28,7 @@ module.exports = {
     SIIGO_PASSWORD: 's112pempresa2#',
     SIIGO_SUSCRIPTION: '184165d1878e45f2910bc99e870ac781'
   },
-  SIIGO_PARAMETROS: {
+  SIIGO_PARAMETROS_PRUEBA: {
     DocCode: 45558, //codigo de la factura
     SalesmanIdentification: '90023', //identificacion
     CityCode: '54001', //codigo de la ciudad
@@ -38,7 +38,7 @@ module.exports = {
     IdTypeCode: 13, //codigo del medio de pago en este caso cartera
     EMailDefault: 'juan.mesa@siigo.com' //correo pro defecto
   },
-  SIIGO_PARAMETROS_DISCOIL: {
+  SIIGO_PARAMETROS: {
     DocCode: 6638, //codigo de la factura
     SalesmanIdentification: '963852741', //identificacion
     CityCode: '54001', //codigo de la ciudad
