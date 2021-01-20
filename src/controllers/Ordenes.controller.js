@@ -424,7 +424,7 @@ async function actualizar (req, res) {
                 IsSocialReason: IsSocialReason,
                 FullName: FullName,
                 FirstName: FirstName,
-                LAstNAme: LastName,
+                LastNAme: LastName,
                 IdTypeCode: SIIGO_PARAMETROS.IdTypeCode,
                 Identification: orden.Identification,
                 BranchOffice: 0,
@@ -439,7 +439,7 @@ async function actualizar (req, res) {
               },
               Contact: {
                 Phone1: Phone,
-                EMail: EMail === '' ? SIIGO_PARAMETROS.EMailDefault : EMail,
+                EMail: EMail || EMail === '' ? SIIGO_PARAMETROS.EMailDefault : EMail,
                 FirstName: FirstName,
                 LastName: LastName,
                 IsPrincipal: true
