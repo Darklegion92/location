@@ -44,7 +44,7 @@ module.exports = {
     CityCode: '54001', //codigo de la ciudad
     StateCode: '54', //codigo del estado o departamento
     CountryCode: 'Co', //codigo del pais
-    PaymentMeansCode: 9087, //codigo del medio de pago en este caso cartera
+    PaymentMeansCode: 2063, //codigo del medio de pago en este caso cartera
     IdTypeCode: 13, //tipo de documento
     EMailDefault: 'juan.mesa@siigo.com'
   }
