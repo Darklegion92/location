@@ -297,112 +297,6 @@ async function actualizar (req, res) {
 
         const respuesta = await axios.post(
           'http://siigoapi.azure-api.net/siigo/api/v1/Invoice/Save?namespace=namespace=v1',
-         /* {
-            Header: {
-              DocCode: 31387,
-              Number: 0,
-              DocDate: '20210119',
-              VATTotalValue: 0,
-              RetVATTotalID: -1,
-              RetVATTotalPercentage: -1,
-              RetVATTotalValue: 0,
-              RetICATotalID: -1,
-              RetICATotalValue: 0,
-              RetICATotaPercentage: -1,
-              SelfWithholdingTaxID: -1,
-              TotalValue: 567600,
-              TotalBase: 567600,
-              SalesmanIdentification: '963852741',
-              Observations: 'Registro automático API-SOLTEC',
-              Account: {
-                IsSocialReason: false,
-                FullName: 'ALFONSO PARADA CARRILLO',
-                FirstName: 'ALFONSO ',
-                LAstNAme: 'PARADA CARRILLO    ',
-                IdTypeCode: 13,
-                Identification: '88178458',
-                BranchOffice: 0,
-                IsVATCompanyType: false,
-                City: { CountryCode: 'Co', StateCode: '54', CityCode: '54001' },
-                Address: 'MZ. J4 LT. 2 TUCUNARRE',
-                Phone: { Number: 5798166 }
-              },
-              Contact: {
-                Phone1: { Number: 5798166 },
-                EMail: 'juan.mesa@siigo.com',
-                FirstName: 'ALFONSO ',
-                LastName: 'PARADA CARRILLO    ',
-                IsPrincipal: true
-              }
-            },
-            Items: [
-              {
-                ProductCode: 'P038T29-101D12',
-                Description: 'LUBRICOL GRASA NEGRA 16K',
-                GrossValue: 93000,
-                BaseValue: 93000,
-                Quantity: 1,
-                UnitValue: 93000,
-                TaxAddId: 0,
-                TaxAddPercentage: 0,
-                TaxDiscountId: -1,
-                TotalValue: 93000,
-                TaxAdd2Id: -1,
-                DiscountPercentage: 0
-              },
-              {
-                ProductCode: 'P086T53-002D02',
-                Description: 'VISCOIL VAL. 140 1/5',
-                GrossValue: 95000,
-                BaseValue: 95000,
-                Quantity: 1,
-                UnitValue: 95000,
-                TaxAddId: 0,
-                TaxAddPercentage: 0,
-                TaxDiscountId: -1,
-                TotalValue: 95000,
-                TaxAdd2Id: -1,
-                DiscountPercentage: 0
-              },
-              {
-                ProductCode: 'P038T04-018D16',
-                Description: 'LUBRICOL 4T 25W60 1/4',
-                GrossValue: 189600,
-                BaseValue: 189600,
-                Quantity: 24,
-                UnitValue: 7900,
-                TaxAddId: 4690,
-                TaxAddPercentage: '19',
-                TaxDiscountId: -1,
-                TotalValue: 189600,
-                TaxAdd2Id: -1,
-                DiscountPercentage: 0
-              },
-              {
-                ProductCode: 'P086T30-080D12',
-                Description: 'VISCOIL ISO 68 1/5',
-                GrossValue: 190000,
-                BaseValue: 190000,
-                Quantity: 2,
-                UnitValue: 95000,
-                TaxAddId: 4690,
-                TaxAddPercentage: '19',
-                TaxDiscountId: -1,
-                TotalValue: 190000,
-                TaxAdd2Id: -1,
-                DiscountPercentage: 0
-              }
-            ],
-            Payments: [
-              {
-                PaymentMeansCode: 9087,
-                Description: 'prueba de pago',
-                Value: 567600,
-                DueDate: '2021119',
-                DueQuote: 1
-              }
-            ]
-          }*/
           {
             Header: {
               DocCode: SIIGO_PARAMETROS.DocCode,
@@ -439,6 +333,7 @@ async function actualizar (req, res) {
               },
               Contact: {
                 Phone1: Phone,
+                Mobile: Phone,
                 EMail: EMail || EMail === ''|| EMail ===null ? SIIGO_PARAMETROS.EMailDefault : EMail,
                 FirstName: FirstName,
                 LastName: LastName,
