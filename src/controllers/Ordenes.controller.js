@@ -439,7 +439,7 @@ async function actualizar (req, res) {
               },
               Contact: {
                 Phone1: Phone,
-                EMail: EMail || EMail === '' ? SIIGO_PARAMETROS.EMailDefault : EMail,
+                EMail: EMail || EMail === ''|| EMail ===null ? SIIGO_PARAMETROS.EMailDefault : EMail,
                 FirstName: FirstName,
                 LastName: LastName,
                 IsPrincipal: true
