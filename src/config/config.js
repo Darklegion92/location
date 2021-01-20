@@ -39,7 +39,7 @@ module.exports = {
     EMailDefault: 'juan.mesa@siigo.com' //correo pro defecto
   },
   SIIGO_PARAMETROS: {
-    DocCode: 31012,//31387, //codigo de la factura
+    DocCode: 31387, //codigo de la factura
     SalesmanIdentification: '963852741', //identificacion
     CityCode: '54001', //codigo de la ciudad
     StateCode: '54', //codigo del estado o departamento
