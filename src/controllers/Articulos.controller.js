@@ -72,7 +72,7 @@ async function consultarItems (req, res) {
           articulos.push({
             Cantidad: item.Cantidad,
             Total: item.Total,
-            PriceList1: item.PriceList1,
+            PriceList4: item.PriceList4,
             Balance: articulo.Balance,
             AccountGroupID: articulo.AccountGroupID,
             Code: articulo.Code,
