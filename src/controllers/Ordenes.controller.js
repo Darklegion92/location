@@ -257,7 +257,7 @@ async function actualizar (req, res) {
           ProductCode: item.Code,
           Description: item.Description,
           GrossValue: item.Total,
-          BaseValue: item.Total -(item.Total*(item.DiscountPercentage/100)),
+          BaseValue: item.Total -item.DiscountValue,
           Quantity: item.Cantidad,
           UnitValue: item.Total / item.Cantidad,
           TaxAddId: TaxAddId,
@@ -265,6 +265,7 @@ async function actualizar (req, res) {
           TaxDiscountId: -1,
           TotalValue: item.Total - item.DiscountValue,
           TaxAdd2Id: -1,
+          DiscountValue:item.DiscountValue,
           Discountercentaje: item.DiscountPercentage,
           WareHouseCode: idbodega
         })
