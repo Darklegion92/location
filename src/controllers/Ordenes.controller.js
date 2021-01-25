@@ -261,7 +261,7 @@ async function actualizar (req, res) {
           Quantity: item.Cantidad,
           UnitValue: item.Total / item.Cantidad,
           TaxAddId: TaxAddId,
-          TaxAddPercentage: TaxAddPercentage,
+          //TaxAddPercentage: TaxAddPercentage,
           TaxDiscountId: -1,
           TotalValue: item.Total - item.DiscountValue,
           TaxAdd2Id: -1,
