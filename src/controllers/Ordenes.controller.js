@@ -184,7 +184,6 @@ async function consultar (req, res) {
   } else if (estado) {
     resp = await Orden.find({ Estado: estado }).sort({ DocDate: -1 })
   } else if (fechas) {
-    console.log('aca estamos')
     resp = await Orden.find({
       DocDate: {
         $gte: fechaI,
@@ -266,7 +265,7 @@ async function actualizar (req, res) {
           TaxDiscountId: -1,
           TotalValue: item.Total - item.DiscountValue,
           TaxAdd2Id: -1,
-          DiscountPercentage: item.DiscountPercentage,
+          DiscountValue: item.DiscountPercentage,
           WareHouseCode: idbodega
         })
         Total = Total + item.Total - item.DiscountValue
