@@ -268,7 +268,7 @@ async function actualizar (req, res) {
           Discountercentaje: item.DiscountPercentage,
           WareHouseCode: idbodega
         })
-        Total = Total + item.Total - item.DiscountValue
+        Total = Total + item.Total
       })
 
       try {
