@@ -236,7 +236,6 @@ async function actualizar (req, res) {
       const bodegas = await Bodega.find()
       await items.forEach(async item => {
         let idbodega
-        console.log(item)
         bodegas.forEach(bodega => {
           if (bodega.Description === item.Bodega) {
             idbodega = bodega.Code
@@ -254,8 +253,8 @@ async function actualizar (req, res) {
         let TaxAddId = articulo[0].TaxAddID
         const tax = await Tax.findOne({ Id: articulo[0].TaxAddID })
 
-        let TaxAddPercentage = tax ? tax.Percentage : 0
-
+       
+        console.log("si llega");
         Items.push({
           ProductCode: item.Code,
           Description: item.Description,
