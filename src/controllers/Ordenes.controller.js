@@ -271,6 +271,7 @@ async function actualizar (req, res) {
         Total = Total + item.Total
       })
 
+      console.log(orden);
       try {
         //consultar al api con base al documento.
         const datosCliente = await axios.get(
@@ -284,10 +285,8 @@ async function actualizar (req, res) {
             }
           }
         )
-       
+          console.log(datosCliente);
         const cliente = datosCliente.data
-
-        console.log(cliente);
         const IsSocialReason = cliente.IsSocialReason || false
         const Address = direccion
         const Phone = { Number: telefono }
