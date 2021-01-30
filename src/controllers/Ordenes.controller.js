@@ -270,21 +270,10 @@ async function actualizar (req, res) {
         })
         Total = Total + item.Total
       })
-
-      console.log(orden);
       try {
         //consultar al api con base al documento.
-        const datosCliente = await axios.get(
-          'http://siigoapi.azure-api.net/siigo/api/v1/Accounts/GetByCode?identification=' +
-            orden.Identification +
-            '&branchOffice=000&namespace=1',
-          {
-            headers: {
-              'Ocp-Apim-Subscription-Key': SIIGO_SUSCRIPTION,
-              Authorization: access_token
-            }
-          }
-        )
+       const datosCliente = await Cliente.find({Identification:orden.Identification})
+
           console.log(datosCliente);
         const cliente = datosCliente.data
         const IsSocialReason = cliente.IsSocialReason || false
