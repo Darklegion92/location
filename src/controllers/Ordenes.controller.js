@@ -272,10 +272,10 @@ async function actualizar (req, res) {
       })
       try {
         //consultar al api con base al documento.
-       const datosCliente = await Cliente.find({Identification:orden.Identification})
+       const cliente = await Cliente.findOne({Identification:orden.Identification})
 
-          console.log(datosCliente);
-        const cliente = datosCliente.data
+          console.log(cliente);
+       // const cliente = datosCliente
         const IsSocialReason = cliente.IsSocialReason || false
         const Address = direccion
         const Phone = { Number: telefono }
