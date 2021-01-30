@@ -284,8 +284,10 @@ async function actualizar (req, res) {
             }
           }
         )
-        console.log(cliente);
+       
         const cliente = datosCliente.data
+
+        console.log(cliente);
         const IsSocialReason = cliente.IsSocialReason
         const Address = direccion
         const Phone = { Number: telefono }
