@@ -236,6 +236,7 @@ async function actualizar (req, res) {
       const bodegas = await Bodega.find()
       await items.forEach(async item => {
         let idbodega
+        console.log(item)
         bodegas.forEach(bodega => {
           if (bodega.Description === item.Bodega) {
             idbodega = bodega.Code
