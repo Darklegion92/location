@@ -223,6 +223,7 @@ async function actualizar (req, res) {
     if (orden.Estado === 'Pendiente') {
       let DocDate1 = new Date()
       //Facturamos
+      console.log("facturando");
       let Items = []
       let Total = 0
       let fecha =
@@ -234,7 +235,7 @@ async function actualizar (req, res) {
       const DueDate = fecha
       const Iva = 0
       const bodegas = await Bodega.find()
-      await items.forEach(async item => {
+      items.forEach(async item => {
         let idbodega
         bodegas.forEach(bodega => {
           if (bodega.Description === item.Bodega) {
@@ -253,9 +254,7 @@ async function actualizar (req, res) {
         let TaxAddId = articulo[0].TaxAddID
         const tax = await Tax.findOne({ Id: articulo[0].TaxAddID })
 
-       
-        console.log("si llega");
-        Items.push({
+        await Items.push({
           ProductCode: item.Code,
           Description: item.Description,
           GrossValue: item.Total,
@@ -273,12 +272,11 @@ async function actualizar (req, res) {
         Total = Total + item.Total
       })
 
-      console.log(Total);
+      console.log(Total)
       try {
-       
         const cliente = await Cliente.findOne({
           Identification: orden.Identification
-        })        
+        })
         const IsSocialReason = cliente.IsSocialReason
         const Address = direccion
         const Phone = { Number: telefono }
