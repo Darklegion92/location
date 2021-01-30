@@ -227,7 +227,9 @@ async function actualizar (req, res) {
       let Total = 0
       let fecha =
         DocDate1.getFullYear().toString() +
-        (DocDate1.getMonth() + 1 <10 ?"0"+(DocDate1.getMonth() + 1):DocDate1.getMonth() + 1) +
+        (DocDate1.getMonth() + 1 < 10
+          ? '0' + (DocDate1.getMonth() + 1)
+          : DocDate1.getMonth() + 1) +
         DocDate1.getDate()
       const DueDate = fecha
       const Iva = 0
@@ -270,13 +272,14 @@ async function actualizar (req, res) {
         })
         Total = Total + item.Total
       })
-      try {
-        //consultar al api con base al documento.
-       const cliente = await Cliente.findOne({Identification:orden.Identification})
 
-          console.log(cliente);
-       // const cliente = datosCliente
-        const IsSocialReason = cliente.IsSocialReason || false
+      console.log(total);
+      try {
+       
+        const cliente = await Cliente.findOne({
+          Identification: orden.Identification
+        })        
+        const IsSocialReason = cliente.IsSocialReason
         const Address = direccion
         const Phone = { Number: telefono }
         const EMail = cliente.EMail
@@ -324,7 +327,10 @@ async function actualizar (req, res) {
               Contact: {
                 Phone1: Phone,
                 Mobile: Phone,
-                EMail: EMail || EMail === ''|| EMail ===null ? SIIGO_PARAMETROS.EMailDefault : EMail,
+                EMail:
+                  EMail || EMail === '' || EMail === null
+                    ? SIIGO_PARAMETROS.EMailDefault
+                    : EMail,
                 FirstName: FirstName,
                 LastName: LastName,
                 IsPrincipal: true
