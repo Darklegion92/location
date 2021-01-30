@@ -273,7 +273,7 @@ async function actualizar (req, res) {
         Total = Total + item.Total
       })
 
-      console.log(total);
+      console.log(Total);
       try {
        
         const cliente = await Cliente.findOne({
