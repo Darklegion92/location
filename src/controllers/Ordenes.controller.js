@@ -288,7 +288,7 @@ async function actualizar (req, res) {
         const cliente = datosCliente.data
 
         console.log(cliente);
-        const IsSocialReason = cliente.IsSocialReason
+        const IsSocialReason = cliente.IsSocialReason || false
         const Address = direccion
         const Phone = { Number: telefono }
         const EMail = cliente.EMail
