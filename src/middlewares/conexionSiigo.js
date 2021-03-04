@@ -24,7 +24,7 @@ async function token(req, res, next) {
     req.token = token.data;
     next();
   } catch (e) {
-    console.log(e);
+    console.log("Error Token>>>",e);
     res.status(500).send(e);
   }
 }

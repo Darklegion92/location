@@ -13,13 +13,12 @@ async function consultarSIIGO (req, res) {
     await Articulo.deleteMany({}, e => {
       console.log('Articulos Eliminados')
     })
-   res.status(200).send({ mesaje: 'actualizado correctamente' })
+  //res.status(200).send({ mesaje: 'actualizado correctamente' })
     let resp
     for (let p = 0; p <= 1500; p++) {
+      
       resp = await axios.get(
-        'http://siigoapi.azure-api.net/siigo/api/v1/Products/GetAll?numberPage=' +
-          p +
-          '&namespace=v1',
+        'http://siigoapi.azure-api.net/siigo/api/v1/Products/GetAll?numberPage='+p+'&namespace=v1',
         {
           headers: {
             'Ocp-Apim-Subscription-Key': SIIGO_SUSCRIPTION,
@@ -29,16 +28,21 @@ async function consultarSIIGO (req, res) {
       )
       if (resp.status === 200 && resp.data.length>0) {
         const articulos = resp.data
-        articulos.forEach(async (articulo, i) => {
-          const nuevoArticulo = new Articulo(articulo)
-          await nuevoArticulo.save()
+        await articulos.forEach(async (articulo, i) => {
+          if(articulo.AccountGroupID!==2045){
+            const nuevoArticulo = new Articulo(articulo)
+            await nuevoArticulo.save()
+          }
         })
-      } else break
+      } else {
+        res.status(200).send({message:"Finalizado Correctamente"})
+        break
+      }
     }
-   // res.status(200).send({ mesaje: 'actualizado correctamente' })
+   //res.status(200).send({resp})
   } catch (error) {
-   // console.log(error)
-    res.status(500).send({ res: error })
+      console.log("Error al Consultar",error)
+    //res.status(500).send({ res: error })
   }
 }
 
