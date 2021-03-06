@@ -26,7 +26,6 @@ async function id (req, res) {
 async function grabarUsuario (req, res) {
   res.setHeader('Content-Type', 'application/json')
   const { nombre, usuario, password } = req.body.user
-  log 
   const nuevoUsuario = new Usuario({
     nombre,
     usuario,
