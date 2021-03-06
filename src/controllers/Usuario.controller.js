@@ -88,14 +88,14 @@ async function actualizarUsuario (req, res) {
 
   console.log(req.body.user);
 
-  const data = {_id:id,nombre}
+  const data = {nombre}
 
   if(password){
     data.password = password
   }
 
   try {
-    const resp = await Usuario.updateOne(data)
+    const resp = await Usuario.updateOne({_id:id},data)
 
     if (resp.nModified > 0)
       res.status(200).send({ res: 'Guardado Correctamente' })
