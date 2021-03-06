@@ -25,8 +25,8 @@ async function id (req, res) {
 
 async function grabarUsuario (req, res) {
   res.setHeader('Content-Type', 'application/json')
-  const { nombre, usuario, password } = req.body
-
+  const { nombre, usuario, password } = req.body.user
+  log 
   const nuevoUsuario = new Usuario({
     nombre,
     usuario,
@@ -84,9 +84,6 @@ async function actualizarUsuario (req, res) {
   res.setHeader('Content-Type', 'application/json')
 
   const { _id, password,nombre } = req.body.user
-
-
-  console.log(req.body.user);
 
   const data = {nombre}
 
