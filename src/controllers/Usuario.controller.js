@@ -83,7 +83,7 @@ async function consultar (req, res) {
 async function actualizarUsuario (req, res) {
   res.setHeader('Content-Type', 'application/json')
 
-  const { id, password,nombre } = req.body.user
+  const { _id, password,nombre } = req.body.user
 
 
   console.log(req.body.user);
@@ -95,7 +95,7 @@ async function actualizarUsuario (req, res) {
   }
 
   try {
-    const resp = await Usuario.updateOne({_id:id},data)
+    const resp = await Usuario.updateOne({_id},data)
 
     if (resp.nModified > 0)
       res.status(200).send({ res: 'Guardado Correctamente' })
