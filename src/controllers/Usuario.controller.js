@@ -83,12 +83,12 @@ async function consultar (req, res) {
 async function actualizarUsuario (req, res) {
   res.setHeader('Content-Type', 'application/json')
 
-  const { id, password,nombre } = req.body
+  const { id, password,nombre } = req.body.user
 
 
   const data = {id,nombre}
 
-  if(password!=""){
+  if(password){
     data.password = password
   }
 
