@@ -86,6 +86,8 @@ async function actualizarUsuario (req, res) {
   const { id, password,nombre } = req.body.user
 
 
+  console.log(req.body.user);
+
   const data = {_id:id,nombre}
 
   if(password){
